@@ -14,7 +14,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html,body{background-color:#0a0e1a!important;color:#f0f2f5!important;color-scheme:dark}
+html,body{background-color:#0a0e1a;color:#f0f2f5;color-scheme:dark}
 body{font-family:'Inter',-apple-system,sans-serif;-webkit-font-smoothing:antialiased;min-height:100dvh;padding:0 18px env(safe-area-inset-bottom);max-width:440px;margin:0 auto;overflow-x:hidden}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 .glow{position:fixed;top:-140px;left:50%;transform:translateX(-50%);width:400px;height:400px;background:radial-gradient(circle,rgba(0,122,193,.15),rgba(239,97,0,.07) 45%,transparent 70%);pointer-events:none;z-index:0}
@@ -23,12 +23,20 @@ body{font-family:'Inter',-apple-system,sans-serif;-webkit-font-smoothing:antiali
 .mark{display:inline-flex;align-items:center;justify-content:center;width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,#007ac1,#ef6100);margin-bottom:12px;font-size:24px;box-shadow:0 6px 32px rgba(0,122,193,.35),0 2px 8px rgba(239,97,0,.2)}
 .hdr h1{font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#f0f2f5;margin-bottom:4px}
 .hdr .sub{font-size:12px;color:#555d73;font-weight:500}
+.ts{text-align:center;font-size:10px;color:#555d73;margin-bottom:16px;font-weight:600;letter-spacing:.02em}
 .tog{display:flex;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:4px;margin-bottom:18px}
 .tog button{flex:1;padding:12px 6px;border:none;border-radius:11px;cursor:pointer;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:#555d73;background:transparent;transition:all .3s ease;-webkit-tap-highlight-color:transparent}
+.tog button:focus-visible{outline:2px solid #34d399;outline-offset:2px}
 .tog button.on{color:#f0f2f5;background:rgba(255,255,255,.08);box-shadow:0 2px 12px rgba(0,0,0,.25)}
 .sum{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.12);border-radius:14px;padding:16px 18px;margin-bottom:16px;font-size:13px;line-height:1.55;color:#c8ccd4}
 .sum strong{color:#34d399;font-weight:700}
 .sum .dim{color:#555d73;font-size:12px;margin-top:6px}
+.bwl{display:flex;flex-direction:column;gap:6px;margin-bottom:18px;padding:14px 16px;border-radius:14px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.05)}
+.bwl-t{font-size:10px;font-weight:700;color:#555d73;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px}
+.bwl-r{display:flex;align-items:baseline;gap:10px;font-size:12px;line-height:1.4}
+.bwl-i{flex-shrink:0;width:18px;text-align:center;font-size:13px}
+.bwl-l{font-weight:700;color:#8b92a5;min-width:78px;flex-shrink:0;font-size:11px}
+.bwl-d{color:#c8ccd4;font-weight:500}
 .rg{display:flex;flex-direction:column;gap:8px;margin-bottom:18px}
 .ri{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.05)}
 .ri-i{font-size:18px;flex-shrink:0;width:28px;text-align:center}
@@ -44,6 +52,7 @@ body{font-family:'Inter',-apple-system,sans-serif;-webkit-font-smoothing:antiali
 .dlt{display:inline-flex;align-items:center;gap:4px;padding:5px 10px;border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;background:rgba(52,211,153,.08);color:#c8ccd4}
 .dlt-l{font-family:'Inter',sans-serif;font-weight:600;color:#8b92a5;font-size:10px}
 .dlt-u{color:#34d399}
+.dlt-0{color:#555d73}
 .cd{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06);border-radius:18px;padding:20px;margin-bottom:14px;opacity:0;transform:translateY(14px);animation:up .5s ease forwards}
 .cd+.cd{animation-delay:.12s}
 @keyframes up{to{opacity:1;transform:translateY(0)}}
@@ -56,7 +65,7 @@ body{font-family:'Inter',-apple-system,sans-serif;-webkit-font-smoothing:antiali
 .ctm em{font-style:normal;font-size:11px;color:#555d73;font-weight:600;margin-left:4px;letter-spacing:.04em;text-transform:uppercase}
 .sl{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:#555d73;background:rgba(255,255,255,.04);padding:4px 10px;border-radius:8px}
 .sb{display:flex;height:8px;border-radius:4px;overflow:hidden;margin-bottom:16px;background:rgba(255,255,255,.03);gap:2px}
-.sb i{display:block;height:100%;border-radius:3px;font-style:normal;transition:width 1s cubic-bezier(.25,.8,.25,1);width:0}
+.seg{display:block;height:100%;border-radius:3px;transition:width 1s cubic-bezier(.25,.8,.25,1);width:0}
 .sg{background:#34d399}
 .sa{background:#fbbf24}
 .sr{background:#f87171}
@@ -76,18 +85,24 @@ body{font-family:'Inter',-apple-system,sans-serif;-webkit-font-smoothing:antiali
 .pa{color:#fbbf24}
 .pr{color:#f87171}
 .ps{color:#64748b}
+.exp{margin-top:14px;padding:10px 14px;border-radius:10px;background:rgba(52,211,153,.05);border:1px solid rgba(52,211,153,.08);font-size:12px;color:#8b92a5;line-height:1.45}
+.exp strong{color:#34d399;font-weight:700}
 .sls{margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,.05)}
-.sls-t{font-size:11px;font-weight:700;color:#555d73;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px}
-.sls-b{display:flex;align-items:flex-end;gap:3px;height:52px}
+.sls-t{font-size:11px;font-weight:700;color:#555d73;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px}
+.sls-note{font-size:10px;color:#444b5e;margin-bottom:10px;font-weight:500}
+.sls-b{display:flex;align-items:flex-end;gap:4px;height:56px}
 .sls-c{display:flex;flex-direction:column;align-items:center;flex:1;gap:3px}
 .sls-bar{width:100%;border-radius:2px 2px 0 0}
-.sls-n{font-family:'JetBrains Mono',monospace;font-size:8px;color:#555d73;font-weight:600}
+.sls-n{font-family:'JetBrains Mono',monospace;font-size:9px;color:#8b92a5;font-weight:700}
 .sls-p{font-family:'JetBrains Mono',monospace;font-size:7px;color:#8b92a5;font-weight:600;min-height:10px}
+.sls-gap{display:flex;align-items:flex-end;justify-content:center;padding:0 2px 0}
+.sls-gap span{font-family:'JetBrains Mono',monospace;font-size:10px;color:#333a4a;font-weight:700;letter-spacing:1px;padding-bottom:4px}
 .prsp{margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,.05)}
 .prsp-t{font-size:11px;font-weight:700;color:#555d73;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px}
 .prsp-r{margin-bottom:10px}
 .prsp-r:last-child{margin-bottom:0}
 .prsp-l{font-size:11px;font-weight:600;color:#8b92a5;margin-bottom:6px}
+.prsp-note{font-size:10px;color:#444b5e;margin-top:8px;font-style:italic}
 .chips{display:flex;flex-wrap:wrap;gap:5px}
 .chip{display:inline-block;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600}
 .chg{background:rgba(52,211,153,.08);color:#34d399;border:1px solid rgba(52,211,153,.15)}
@@ -102,394 +117,464 @@ details.src summary::-webkit-details-marker{display:none}
 .ft{text-align:center;padding:4px 0 36px;font-size:11px;color:#444b5e}
 </style>
 </head>
-<body style="background-color:#0a0e1a;color:#f0f2f5">
+<body>
 <div class="glow"></div>
 <div class="wrap">
 <div class="hdr">
   <div class="mark">&#9889;</div>
   <h1>OKC Pick Tracker</h1>
-  <p class="sub">Market-implied odds &middot; April 2026 Play-In</p>
+  <p class="sub">Market-implied odds &middot; 2026 Play-In</p>
 </div>
-<div class="tog">
-  <button class="on" id="b0">Right Now</button>
-  <button id="b1">If GSW + ORL Win</button>
+<div class="ts">Lines snapshot &middot; Apr 13, 2026</div>
+<div class="tog" role="group" aria-label="Scenario toggle">
+  <button id="b0" aria-pressed="true">Right Now</button>
+  <button id="b1" aria-pressed="false">If GSW + ORL Win</button>
 </div>
 <div id="app"></div>
 <details class="src">
   <summary>&#9656; Methodology &amp; Sources</summary>
   <div class="src-body">
-    <p><strong>Play-in odds:</strong> No-vig from sportsbook lines (GSW +152 / LAC -170; ORL +100 / PHI -115).</p>
-    <p><strong>Playoff probability:</strong> Market-implied (LAC No -212; PHI Yes -350).</p>
-    <p><strong>Lottery slots:</strong> NBA fixed tables via Tankathon. LAC #12, PHI #14.</p>
-    <p><strong>Slot mechanics:</strong> Slot #12 can only land at picks 1&ndash;4 or 12&ndash;14. Slot #14 can only land at picks 1&ndash;4 or 14. Picks outside those ranges are structurally impossible.</p>
-    <p><strong>Protections:</strong> LAC unprotected. PHI top-4 protected (2026).</p>
-    <p><strong>Prospects:</strong> Pre-draft consensus from ESPN (Woo), Bleacher Report (Wasserman), The Ringer (Mann). 2026 class.</p>
-    <p><strong>Updated:</strong> April 13, 2026</p>
+    <p><strong>Inputs</strong></p>
+    <p>Play-in odds: no-vig from sportsbook lines (GSW +152 / LAC &minus;170; ORL +100 / PHI &minus;115). Playoff probability: market-implied (LAC No &minus;212; PHI Yes &minus;350).</p>
+    <p><strong>Lottery mechanics</strong></p>
+    <p>NBA fixed tables via Tankathon. Slot #12 can only land picks 1&ndash;4 or 12&ndash;14. Slot #14 can only land picks 1&ndash;4 or 14. All other slots are structurally impossible.</p>
+    <p><strong>Protections</strong></p>
+    <p>LAC pick: unprotected. PHI pick: top-4 protected (2026).</p>
+    <p><strong>Prospect methodology</strong></p>
+    <p>Names drawn from consensus mocks (ESPN/Woo, B/R/Wasserman, The Ringer/Mann). They illustrate who is commonly projected in each range &mdash; not a predicted OKC draft board.</p>
+    <p><strong>Last updated</strong></p>
+    <p>April 13, 2026.</p>
   </div>
 </details>
 <div class="ft">Built for Thunder fans who like math.</div>
 </div>
 
 <script>
-/*
-  NBA Lottery mechanics for pick slot distributions:
-  - Slot #12 (10 combinations / 1000): can only land picks 1-4 (lottery jump) or 12-14 (stay/slide).
-    Picks 5-11 are impossible — all 11 teams ahead in slots 1-11 would still pick before slot 12
-    unless they jump into the top 4, and at most 4 can jump.
-  - Slot #14 (5 combinations / 1000): can only land picks 1-4 (lottery jump) or 14.
-    Picks 5-13 are impossible — slot 14 is last, and when 4 teams are drawn for top 4,
-    the remaining 10 fill picks 5-14 in slot order. Slot 14 is always last among remaining.
-  Probabilities below from Tankathon / NBA official lottery tables.
-*/
+/* ═══════════════════════════════════════════
+   Helpers
+   ═══════════════════════════════════════════ */
 
-var lacSlots = [
-  {n:"1", p:1.0, c:"#fbbf24"},
-  {n:"2", p:1.1, c:"#fbbf24"},
-  {n:"3", p:1.2, c:"#fbbf24"},
-  {n:"4", p:1.4, c:"#fbbf24"},
-  {n:"5", p:0, c:"#1e293b"},
-  {n:"6", p:0, c:"#1e293b"},
-  {n:"7", p:0, c:"#1e293b"},
-  {n:"8", p:0, c:"#1e293b"},
-  {n:"9", p:0, c:"#1e293b"},
-  {n:"10", p:0, c:"#1e293b"},
-  {n:"11", p:0, c:"#1e293b"},
-  {n:"12", p:71.7, c:"#34d399"},
-  {n:"13", p:17.7, c:"#34d399"},
-  {n:"14", p:5.9, c:"#34d399"}
-];
+function pct(n) {
+  if (n === 100 || n === 0) return n + "%";
+  return Number.isInteger(n) ? n + "%" : n.toFixed(1) + "%";
+}
 
-var phiSlots = [
-  {n:"1", p:0.5, c:"#f87171"},
-  {n:"2", p:0.5, c:"#f87171"},
-  {n:"3", p:0.6, c:"#f87171"},
-  {n:"4", p:0.7, c:"#f87171"},
-  {n:"5", p:0, c:"#1e293b"},
-  {n:"6", p:0, c:"#1e293b"},
-  {n:"7", p:0, c:"#1e293b"},
-  {n:"8", p:0, c:"#1e293b"},
-  {n:"9", p:0, c:"#1e293b"},
-  {n:"10", p:0, c:"#1e293b"},
-  {n:"11", p:0, c:"#1e293b"},
-  {n:"12", p:0, c:"#1e293b"},
-  {n:"13", p:0, c:"#1e293b"},
-  {n:"14", p:97.7, c:"#34d399"}
-];
+function signedPct(n) {
+  var s = n > 0 ? "+" : "";
+  return s + pct(n);
+}
 
-var lacPr = [
-  {lbl:"If pick lands 12\u201314 (95.3%)", chips:[
-    {name:"Koa Peat", c:"chg"},
-    {name:"Cameron Carr", c:"chg"},
-    {name:"Nate Ament", c:"chg"}
-  ]},
-  {lbl:"If top-4 jump (4.7%)", chips:[
-    {name:"AJ Dybantsa", c:"cha"},
-    {name:"Darryn Peterson", c:"cha"},
-    {name:"Cameron Boozer", c:"cha"}
-  ]}
-];
+/* ═══════════════════════════════════════════
+   Shared team identity (defined once)
+   ═══════════════════════════════════════════ */
 
-var phiPr = [
-  {lbl:"If pick conveys at 14 (97.7%)", chips:[
-    {name:"Nate Ament", c:"chg"},
-    {name:"Jayden Quaintance", c:"chg"},
-    {name:"Karim Lopez", c:"chg"}
-  ]},
-  {lbl:"Top 4 \u2192 Philly keeps (2.3%)", chips:[
-    {name:"Pick stays in Philly", c:"chs"}
-  ]}
-];
+var teams = {
+  LAC: {
+    name: "Clippers", code: "LAC", dotClass: "tdl",
+    /*
+      Slot #12: can only land 1-4 or 12-14.
+      null = gap marker for compressed chart.
+    */
+    slots: [
+      {n:"1", p:1.0}, {n:"2", p:1.1}, {n:"3", p:1.2}, {n:"4", p:1.4},
+      null,
+      {n:"12", p:71.7}, {n:"13", p:17.7}, {n:"14", p:5.9}
+    ],
+    possibleRange: "1\u20134 and 12\u201314",
+    prospects: [
+      {lbl:"If pick lands 12\u201314 (95.3%)", chips:[
+        {name:"Koa Peat", c:"chg"},
+        {name:"Cameron Carr", c:"chg"},
+        {name:"Nate Ament", c:"chg"}
+      ]},
+      {lbl:"If top-4 jump (4.7%)", chips:[
+        {name:"AJ Dybantsa", c:"cha"},
+        {name:"Darryn Peterson", c:"cha"},
+        {name:"Cameron Boozer", c:"cha"}
+      ]}
+    ]
+  },
+  PHI: {
+    name: "76ers", code: "PHI", dotClass: "tdp",
+    /*
+      Slot #14: can only land 1-4 or 14.
+    */
+    slots: [
+      {n:"1", p:0.5}, {n:"2", p:0.5}, {n:"3", p:0.6}, {n:"4", p:0.7},
+      null,
+      {n:"14", p:97.7}
+    ],
+    possibleRange: "1\u20134 and 14",
+    prospects: [
+      {lbl:"If pick conveys at 14 (97.7%)", chips:[
+        {name:"Nate Ament", c:"chg"},
+        {name:"Jayden Quaintance", c:"chg"},
+        {name:"Karim Lopez", c:"chg"}
+      ]},
+      {lbl:"Top 4 \u2192 Philly keeps (2.3%)", chips:[
+        {name:"Pick stays in Philly", c:"chs"}
+      ]}
+    ]
+  }
+};
 
-var lacPrIf = [
-  {lbl:"If pick lands 12\u201314 (95.3%)", chips:[
-    {name:"Koa Peat", c:"chg"},
-    {name:"Cameron Carr", c:"chg"},
-    {name:"Nate Ament", c:"chg"}
-  ]},
-  {lbl:"If top-4 jump (4.7%)", chips:[
-    {name:"AJ Dybantsa", c:"cha"},
-    {name:"Darryn Peterson", c:"cha"},
-    {name:"Cameron Boozer", c:"cha"}
-  ]}
-];
+/* ═══════════════════════════════════════════
+   Scenario data — all values numeric
+   ═══════════════════════════════════════════ */
 
-var phiPrIf = [
-  {lbl:"If pick conveys at 14 (97.7%)", chips:[
-    {name:"Nate Ament", c:"chg"},
-    {name:"Jayden Quaintance", c:"chg"},
-    {name:"Karim Lopez", c:"chg"}
-  ]},
-  {lbl:"Top 4 \u2192 Philly keeps (2.3%)", chips:[
-    {name:"Pick stays in Philly", c:"chs"}
-  ]}
-];
-
-var D = {
+var scenarios = {
   now: {
-    sum: "<strong>Most likely:</strong> Clippers miss the playoffs and OKC gets a " +
-         "back-end lottery pick from LAC. The 76ers pick is unlikely to convey " +
-         "\u2014 Philly is heavily favored to make the playoffs." +
-         "<div class='dim'>Tonight\u2019s play-in games could change everything.</div>",
-    rg: [
-      {icon:"\uD83C\uDFC0", game:"Warriors vs Clippers", best:"GSW",
+    summary:
+      "<strong>Most likely:</strong> Clippers miss the playoffs and OKC gets a " +
+      "back-end lottery pick from LAC. The 76ers pick is unlikely to convey " +
+      "\u2014 Philly is heavily favored to make the playoffs." +
+      "<div class='dim'>Tonight\u2019s play-in games could change everything.</div>",
+    rooting: [
+      {icon:"🏀", game:"Warriors vs Clippers", best:"GSW",
        why:"Eliminates LAC \u2192 guaranteed lottery asset"},
-      {icon:"\uD83C\uDFC0", game:"Magic vs 76ers", best:"ORL",
+      {icon:"🏀", game:"Magic vs 76ers", best:"ORL",
        why:"Forces Philly into must-win \u2192 ~53% miss playoffs"}
     ],
     keys: [
-      {v:"68%", l:"LAC PICK<br>BECOMES LOTTERY", c:"#34d399"},
-      {v:"25%", l:"PHI PICK<br>CONVEYS TO OKC", c:"#34d399"},
-      {v:"4.7%", l:"LAC PICK<br>LANDS TOP 4", c:"#fbbf24"}
+      {v:68,  label:"LAC PICK<br>BECOMES LOTTERY", c:"#34d399"},
+      {v:25,  label:"PHI PICK<br>CONVEYS TO OKC",  c:"#34d399"},
+      {v:4.7, label:"LAC PICK<br>LANDS TOP 4",     c:"#fbbf24"}
     ],
-    deltas: null,
+    bwl: {
+      likely: "OKC gets LAC lottery pick only (back-end, 12\u201314)",
+      best:   "Both LAC and PHI picks convey \u2014 two lottery assets",
+      chaos:  "LAC pick jumps into top 4 (4.7%)",
+      worst:  "Both teams make playoffs \u2014 OKC gets nothing usable"
+    },
     cards: [
       {
-        tm:"Clippers", cd:"LAC", dc:"tdl",
-        sl:"Lottery Slot #12",
-        sg:[{p:4.7,c:"sa"}, {p:63.3,c:"sg"}, {p:32,c:"ss"}],
-        rw:[
-          {lb:"Lottery \u2192 OKC",
-           ds:"Clippers miss playoffs, pick 5\u201314",
-           pc:"63.3%", oc:"cg", xc:"pg"},
-          {lb:"Playoff Pick",
-           ds:"Clippers make playoffs",
-           pc:"32.0%", oc:"csl", xc:"ps"},
-          {lb:"Top 4 Lottery",
-           ds:"Includes 1.0% chance at No. 1",
-           pc:"4.7%", oc:"ca", xc:"pa"}
-        ],
-        slots: lacSlots,
-        prospects: lacPr
+        team: "LAC", slotLabel: "Lottery Slot #12",
+        segments: [{p:4.7,c:"sa"}, {p:63.3,c:"sg"}, {p:32,c:"ss"}],
+        expected: "Most likely result: <strong>pick 12</strong>. Upside tail: 4.7% top-4 jump.",
+        outcomes: [
+          {lb:"Conveys to OKC",  ds:"Clippers miss playoffs, pick 12\u201314",
+           pc:63.3, oc:"cg", xc:"pg"},
+          {lb:"Does not convey", ds:"Clippers make playoffs",
+           pc:32.0, oc:"csl", xc:"ps"},
+          {lb:"Top-4 jump",      ds:"Includes 1.0% chance at No.\u00a01",
+           pc:4.7, oc:"ca", xc:"pa"}
+        ]
       },
       {
-        tm:"76ers", cd:"PHI", dc:"tdp",
-        sl:"Lottery Slot #14",
-        sg:[{p:24.4,c:"sg"}, {p:0.6,c:"sr"}, {p:75.0,c:"ss"}],
-        rw:[
-          {lb:"Lottery \u2192 OKC",
-           ds:"Philly misses, pick lands at 14",
-           pc:"24.4%", oc:"cg", xc:"pg"},
-          {lb:"Playoff Pick",
-           ds:"76ers make playoffs",
-           pc:"75.0%", oc:"csl", xc:"ps"},
-          {lb:"Philly Keeps",
-           ds:"Misses but jumps to top 4",
-           pc:"0.6%", oc:"cr", xc:"pr"}
-        ],
-        slots: phiSlots,
-        prospects: phiPr
+        team: "PHI", slotLabel: "Lottery Slot #14",
+        segments: [{p:24.4,c:"sg"}, {p:0.6,c:"sr"}, {p:75,c:"ss"}],
+        expected: "If PHI conveys, it is overwhelmingly <strong>pick 14</strong>.",
+        outcomes: [
+          {lb:"Conveys to OKC",       ds:"Philly misses playoffs, pick at 14",
+           pc:24.4, oc:"cg", xc:"pg"},
+          {lb:"Does not convey",      ds:"76ers make playoffs",
+           pc:75.0, oc:"csl", xc:"ps"},
+          {lb:"Top-4 protection hit", ds:"Misses but jumps to top 4 \u2192 Philly keeps",
+           pc:0.6, oc:"cr", xc:"pr"}
+        ]
       }
     ]
   },
+
   "if": {
-    sum: "<strong>This scenario is huge for OKC.</strong> The Clippers are " +
-         "eliminated and their pick is guaranteed to land in the lottery. " +
-         "Philly is pushed to a must-win final play-in \u2014 roughly a " +
-         "coin flip to miss the playoffs." +
-         "<div class='dim'>Two live lottery assets is the Thunder\u2019s dream board.</div>",
-    rg: [
+    summary:
+      "<strong>This scenario is huge for OKC.</strong> The Clippers are " +
+      "eliminated and their pick is guaranteed to land in the lottery. " +
+      "Philly is pushed to a must-win final play-in \u2014 roughly a " +
+      "coin flip to miss the playoffs." +
+      "<div class='dim'>Two live lottery assets is the Thunder\u2019s dream board.</div>",
+    rooting: [
       {icon:"\u2705", game:"Warriors beat Clippers", best:"Done",
        why:"LAC eliminated \u2014 locked into lottery at slot #12"},
-      {icon:"\uD83C\uDFC0", game:"76ers vs TBD (final play-in)", best:"Opponent",
+      {icon:"🏀", game:"76ers vs TBD (final play-in)", best:"Opponent",
        why:"One more Philly loss \u2192 pick conveys to OKC"}
     ],
     keys: [
-      {v:"100%", l:"LAC PICK<br>BECOMES LOTTERY", c:"#34d399"},
-      {v:"52%", l:"PHI PICK<br>CONVEYS TO OKC", c:"#34d399"},
-      {v:"4.7%", l:"LAC PICK<br>LANDS TOP 4", c:"#fbbf24"}
+      {v:100, label:"LAC PICK<br>BECOMES LOTTERY", c:"#34d399"},
+      {v:52,  label:"PHI PICK<br>CONVEYS TO OKC",  c:"#34d399"},
+      {v:4.7, label:"LAC PICK<br>LANDS TOP 4",     c:"#fbbf24"}
     ],
-    deltas: [
-      {lbl:"LAC lottery", from:"68%", to:"100%", delta:"+32%"},
-      {lbl:"PHI convey", from:"25%", to:"52%", delta:"+27%"},
-      {lbl:"LAC top 4", from:"4.7%", to:"4.7%", delta:"+0%"}
-    ],
+    bwl: {
+      likely: "OKC locks in LAC lottery asset; PHI is a coin flip",
+      best:   "Both picks convey \u2014 OKC adds two lottery talents",
+      chaos:  "LAC pick jumps into top 4 (4.7%)",
+      worst:  "Philly wins final play-in \u2014 OKC gets LAC pick only"
+    },
     cards: [
       {
-        tm:"Clippers", cd:"LAC", dc:"tdl",
-        sl:"Eliminated \u00b7 Slot #12",
-        sg:[{p:4.7,c:"sa"}, {p:95.3,c:"sg"}],
-        rw:[
-          {lb:"Lottery \u2192 OKC",
-           ds:"Clippers eliminated, pick 12\u201314",
-           pc:"95.3%", oc:"cg", xc:"pg"},
-          {lb:"Top 4 Lottery",
-           ds:"Includes 1.0% chance at No. 1",
-           pc:"4.7%", oc:"ca", xc:"pa"}
-        ],
-        slots: lacSlots,
-        prospects: lacPrIf
+        team: "LAC", slotLabel: "Eliminated \u00b7 Slot #12",
+        segments: [{p:4.7,c:"sa"}, {p:95.3,c:"sg"}],
+        expected: "Guaranteed lottery. Most likely result: <strong>pick 12</strong>.",
+        outcomes: [
+          {lb:"Conveys to OKC", ds:"Clippers eliminated, pick 12\u201314",
+           pc:95.3, oc:"cg", xc:"pg"},
+          {lb:"Top-4 jump",     ds:"Includes 1.0% chance at No.\u00a01",
+           pc:4.7, oc:"ca", xc:"pa"}
+        ]
       },
       {
-        tm:"76ers", cd:"PHI", dc:"tdp",
-        sl:"Must-Win \u00b7 Slot #14",
-        sg:[{p:50.8,c:"sg"}, {p:1.2,c:"sr"}, {p:48.0,c:"ss"}],
-        rw:[
-          {lb:"Lottery \u2192 OKC",
-           ds:"Philly loses final play-in, pick at 14",
-           pc:"50.8%", oc:"cg", xc:"pg"},
-          {lb:"Playoff Pick",
-           ds:"Philly wins final play-in",
-           pc:"48.0%", oc:"csl", xc:"ps"},
-          {lb:"Philly Keeps",
-           ds:"Misses but jumps to top 4",
-           pc:"1.2%", oc:"cr", xc:"pr"}
-        ],
-        slots: phiSlots,
-        prospects: phiPrIf
+        team: "PHI", slotLabel: "Must-Win \u00b7 Slot #14",
+        segments: [{p:50.8,c:"sg"}, {p:1.2,c:"sr"}, {p:48,c:"ss"}],
+        expected: "If PHI conveys, it is overwhelmingly <strong>pick 14</strong>.",
+        outcomes: [
+          {lb:"Conveys to OKC",       ds:"Philly loses final play-in, pick at 14",
+           pc:50.8, oc:"cg", xc:"pg"},
+          {lb:"Does not convey",      ds:"Philly wins final play-in",
+           pc:48.0, oc:"csl", xc:"ps"},
+          {lb:"Top-4 protection hit", ds:"Misses but jumps to top 4 \u2192 Philly keeps",
+           pc:1.2, oc:"cr", xc:"pr"}
+        ]
       }
     ]
   }
 };
 
-var cur = "now";
+/* ═══════════════════════════════════════════
+   Compute deltas from baseline
+   ═══════════════════════════════════════════ */
 
-document.getElementById("b0").addEventListener("click", function() {
-  go("now");
-});
+var deltaLabels = ["LAC lottery", "PHI convey", "LAC top 4"];
 
-document.getElementById("b1").addEventListener("click", function() {
-  go("if");
-});
-
-function go(k) {
-  cur = k;
-  document.getElementById("b0").className = k === "now" ? "on" : "";
-  document.getElementById("b1").className = k === "if" ? "on" : "";
-  render();
+function buildDeltas(base, scen) {
+  var out = [];
+  for (var i = 0; i < base.keys.length; i++) {
+    out.push({
+      lbl:   deltaLabels[i],
+      from:  base.keys[i].v,
+      to:    scen.keys[i].v,
+      delta: +(scen.keys[i].v - base.keys[i].v).toFixed(1)
+    });
+  }
+  return out;
 }
 
-function render() {
-  var d = D[cur];
-  var h = "";
+/* ═══════════════════════════════════════════
+   Render components
+   ═══════════════════════════════════════════ */
 
-  h += '<div class="sum">' + d.sum + '</div>';
+function renderSummary(text) {
+  return '<div class="sum">' + text + '</div>';
+}
 
-  h += '<div class="rg">';
-  for (var i = 0; i < d.rg.length; i++) {
-    var r = d.rg[i];
-    h += '<div class="ri">';
-    h += '<div class="ri-i">' + r.icon + '</div>';
-    h += '<div class="ri-f">';
-    h += '<div class="ri-g">' + r.game + '</div>';
-    h += '<div class="ri-w">' + r.why + '</div>';
-    h += '</div>';
-    h += '<span class="ri-t">Root ' + r.best + '</span>';
-    h += '</div>';
+function renderBWL(bwl) {
+  var rows = [
+    {icon:"🎯", label:"Most likely",   text: bwl.likely},
+    {icon:"🚀", label:"Best case",      text: bwl.best},
+    {icon:"🎰", label:"Chaos jackpot",  text: bwl.chaos},
+    {icon:"🚫", label:"Worst case",     text: bwl.worst}
+  ];
+  var h = '<div class="bwl"><div class="bwl-t">Scenario at a glance</div>';
+  for (var i = 0; i < rows.length; i++) {
+    h += '<div class="bwl-r">' +
+         '<div class="bwl-i">' + rows[i].icon + '</div>' +
+         '<div class="bwl-l">' + rows[i].label + '</div>' +
+         '<div class="bwl-d">' + rows[i].text + '</div>' +
+         '</div>';
   }
-  h += '</div>';
+  return h + '</div>';
+}
 
-  h += '<div class="ks">';
-  for (var i = 0; i < d.keys.length; i++) {
-    var k = d.keys[i];
-    h += '<div class="kn">';
-    h += '<span class="v" style="color:' + k.c + '">' + k.v + '</span>';
-    h += '<span class="l">' + k.l + '</span>';
-    h += '</div>';
+function renderRooting(rg) {
+  var h = '<div class="rg">';
+  for (var i = 0; i < rg.length; i++) {
+    var r = rg[i];
+    h += '<div class="ri">' +
+         '<div class="ri-i">' + r.icon + '</div>' +
+         '<div class="ri-f">' +
+           '<div class="ri-g">' + r.game + '</div>' +
+           '<div class="ri-w">' + r.why + '</div>' +
+         '</div>' +
+         '<span class="ri-t">Root ' + r.best + '</span>' +
+         '</div>';
   }
-  h += '</div>';
+  return h + '</div>';
+}
 
-  if (d.deltas) {
-    h += '<div class="deltas">';
-    for (var i = 0; i < d.deltas.length; i++) {
-      var dl = d.deltas[i];
-      h += '<div class="dlt">';
-      h += '<span class="dlt-l">' + dl.lbl + '</span> ';
-      h += dl.from + ' \u2192 ' + dl.to + ' ';
-      h += '<span class="dlt-u">' + dl.delta + '</span>';
-      h += '</div>';
-    }
-    h += '</div>';
+function renderKeys(keys) {
+  var h = '<div class="ks">';
+  for (var i = 0; i < keys.length; i++) {
+    h += '<div class="kn">' +
+         '<span class="v" style="color:' + keys[i].c + '">' + pct(keys[i].v) + '</span>' +
+         '<span class="l">' + keys[i].label + '</span>' +
+         '</div>';
   }
+  return h + '</div>';
+}
 
-  for (var i = 0; i < d.cards.length; i++) {
-    var c = d.cards[i];
-    h += '<div class="cd">';
+function renderDeltas(deltas) {
+  var h = '<div class="deltas">';
+  for (var i = 0; i < deltas.length; i++) {
+    var d = deltas[i];
+    var cls = d.delta > 0 ? "dlt-u" : "dlt-0";
+    h += '<div class="dlt">' +
+         '<span class="dlt-l">' + d.lbl + '</span> ' +
+         pct(d.from) + ' \u2192 ' + pct(d.to) + ' ' +
+         '<span class="' + cls + '">' + signedPct(d.delta) + '</span>' +
+         '</div>';
+  }
+  return h + '</div>';
+}
 
-    h += '<div class="ct">';
-    h += '<div class="ctm">';
-    h += '<div class="tdot ' + c.dc + '"></div>';
-    h += '<b>' + c.tm + '</b>';
-    h += '<em>' + c.cd + '</em>';
-    h += '</div>';
-    h += '<div class="sl">' + c.sl + '</div>';
-    h += '</div>';
-
-    h += '<div class="sb">';
-    for (var j = 0; j < c.sg.length; j++) {
-      h += '<i class="' + c.sg[j].c + '" data-w="' + c.sg[j].p + '"></i>';
+function renderSlotChart(slotData) {
+  var maxP = 0;
+  for (var i = 0; i < slotData.length; i++) {
+    if (slotData[i] && slotData[i].p > maxP) maxP = slotData[i].p;
+  }
+  var h = '<div class="sls-b">';
+  for (var i = 0; i < slotData.length; i++) {
+    var s = slotData[i];
+    if (s === null) {
+      h += '<div class="sls-gap"><span>\u00b7\u00b7\u00b7</span></div>';
+      continue;
     }
-    h += '</div>';
+    var bH = s.p === 0 ? 0 : Math.max(3, Math.round((s.p / maxP) * 42));
+    var barColor = s.p >= 5 ? "#34d399" : "#fbbf24";
+    h += '<div class="sls-c">' +
+         '<div class="sls-p">' + (s.p >= 5 ? Math.round(s.p) + '%' : s.p.toFixed(1) + '%') + '</div>' +
+         '<div class="sls-bar" style="height:' + bH + 'px;background:' + barColor + '"></div>' +
+         '<div class="sls-n">' + s.n + '</div>' +
+         '</div>';
+  }
+  return h + '</div>';
+}
 
-    h += '<div class="os">';
-    for (var j = 0; j < c.rw.length; j++) {
-      var rr = c.rw[j];
-      h += '<div class="orow">';
-      h += '<div class="oc ' + rr.oc + '"></div>';
-      h += '<div class="oi">';
-      h += '<div class="ol">' + rr.lb + '</div>';
-      h += '<div class="od">' + rr.ds + '</div>';
-      h += '</div>';
-      h += '<div class="op ' + rr.xc + '">' + rr.pc + '</div>';
-      h += '</div>';
-    }
-    h += '</div>';
-
-    var maxP = 0;
-    for (var j = 0; j < c.slots.length; j++) {
-      if (c.slots[j].p > maxP) maxP = c.slots[j].p;
-    }
-    h += '<div class="sls">';
-    h += '<div class="sls-t">Pick slot distribution (if lottery)</div>';
-    h += '<div class="sls-b">';
-    for (var j = 0; j < c.slots.length; j++) {
-      var s = c.slots[j];
-      var bH = s.p === 0 ? 0 : Math.max(2, Math.round((s.p / maxP) * 40));
-      h += '<div class="sls-c">';
-      h += '<div class="sls-p">';
-      if (s.p === 0) {
-        h += '<span style="color:#333a4a;font-size:6px">\u2014</span>';
-      } else if (s.p >= 5) {
-        h += Math.round(s.p) + '%';
-      }
-      h += '</div>';
-      h += '<div class="sls-bar" style="height:' + bH + 'px;';
-      h += 'background:' + (s.p === 0 ? 'rgba(255,255,255,.03)' : s.c) + '"></div>';
-      h += '<div class="sls-n" style="' + (s.p === 0 ? 'color:#2a3040' : '') + '">' + s.n + '</div>';
-      h += '</div>';
+function renderProspects(prospects) {
+  var h = '';
+  for (var j = 0; j < prospects.length; j++) {
+    var pr = prospects[j];
+    h += '<div class="prsp-r">' +
+         '<div class="prsp-l">' + pr.lbl + '</div>' +
+         '<div class="chips">';
+    for (var m = 0; m < pr.chips.length; m++) {
+      h += '<span class="chip ' + pr.chips[m].c + '">' + pr.chips[m].name + '</span>';
     }
     h += '</div></div>';
-
-    h += '<div class="prsp">';
-    h += '<div class="prsp-t">Prospects at this range</div>';
-    for (var j = 0; j < c.prospects.length; j++) {
-      var pr = c.prospects[j];
-      h += '<div class="prsp-r">';
-      h += '<div class="prsp-l">' + pr.lbl + '</div>';
-      h += '<div class="chips">';
-      for (var m = 0; m < pr.chips.length; m++) {
-        var ch = pr.chips[m];
-        h += '<span class="chip ' + ch.c + '">' + ch.name + '</span>';
-      }
-      h += '</div></div>';
-    }
-    h += '</div>';
-
-    h += '</div>';
   }
+  h += '<div class="prsp-note">Commonly mocked in this range \u2014 not a projected OKC board.</div>';
+  return h;
+}
 
-  document.getElementById("app").innerHTML = h;
+function renderCard(card) {
+  var t = teams[card.team];
+  var h = '<div class="cd">';
 
+  /* Header */
+  h += '<div class="ct">' +
+       '<div class="ctm">' +
+         '<div class="tdot ' + t.dotClass + '"></div>' +
+         '<b>' + t.name + '</b>' +
+         '<em>' + t.code + '</em>' +
+       '</div>' +
+       '<div class="sl">' + card.slotLabel + '</div>' +
+       '</div>';
+
+  /* Stacked bar */
+  h += '<div class="sb">';
+  for (var j = 0; j < card.segments.length; j++) {
+    h += '<span class="seg ' + card.segments[j].c + '" data-w="' + card.segments[j].p + '"></span>';
+  }
+  h += '</div>';
+
+  /* Outcome rows */
+  h += '<div class="os">';
+  for (var j = 0; j < card.outcomes.length; j++) {
+    var o = card.outcomes[j];
+    h += '<div class="orow">' +
+         '<div class="oc ' + o.oc + '"></div>' +
+         '<div class="oi">' +
+           '<div class="ol">' + o.lb + '</div>' +
+           '<div class="od">' + o.ds + '</div>' +
+         '</div>' +
+         '<div class="op ' + o.xc + '">' + pct(o.pc) + '</div>' +
+         '</div>';
+  }
+  h += '</div>';
+
+  /* Expected outcome callout */
+  h += '<div class="exp">' + card.expected + '</div>';
+
+  /* Compressed slot chart */
+  h += '<div class="sls">' +
+       '<div class="sls-t">Pick slot distribution (if lottery)</div>' +
+       '<div class="sls-note">Only slots ' + t.possibleRange + ' are possible</div>' +
+       renderSlotChart(t.slots) +
+       '</div>';
+
+  /* Prospects */
+  h += '<div class="prsp">' +
+       '<div class="prsp-t">Names often mocked in this range</div>' +
+       renderProspects(t.prospects) +
+       '</div>';
+
+  return h + '</div>';
+}
+
+/* ═══════════════════════════════════════════
+   Bar animation helper
+   ═══════════════════════════════════════════ */
+
+function animateBars() {
   requestAnimationFrame(function() {
     requestAnimationFrame(function() {
-      var segs = document.querySelectorAll(".sb i");
-      for (var x = 0; x < segs.length; x++) {
-        segs[x].style.width = segs[x].getAttribute("data-w") + "%";
+      var segs = document.querySelectorAll(".sb .seg");
+      for (var i = 0; i < segs.length; i++) {
+        segs[i].style.width = segs[i].dataset.w + "%";
       }
     });
   });
 }
 
-render();
+/* ═══════════════════════════════════════════
+   State management & main render
+   ═══════════════════════════════════════════ */
+
+var appEl = document.getElementById("app");
+var b0El  = document.getElementById("b0");
+var b1El  = document.getElementById("b1");
+
+/* Init from URL hash (safe in sandboxed iframes) */
+var hash = "";
+try { hash = location.hash.replace("#", ""); } catch(e) {}
+var cur  = (hash === "if" || hash === "now") ? hash : "now";
+
+function go(k) {
+  cur = k;
+  try { history.replaceState(null, "", "#" + k); } catch(e) {}
+
+  b0El.classList.toggle("on", k === "now");
+  b1El.classList.toggle("on", k === "if");
+  b0El.setAttribute("aria-pressed", k === "now");
+  b1El.setAttribute("aria-pressed", k === "if");
+
+  render();
+}
+
+function render() {
+  var d = scenarios[cur];
+  var h = "";
+
+  h += renderSummary(d.summary);
+  h += renderBWL(d.bwl);
+  h += renderRooting(d.rooting);
+  h += renderKeys(d.keys);
+
+  /* Deltas are computed, not hardcoded */
+  if (cur === "if") {
+    h += renderDeltas(buildDeltas(scenarios.now, d));
+  }
+
+  for (var i = 0; i < d.cards.length; i++) {
+    h += renderCard(d.cards[i]);
+  }
+
+  appEl.innerHTML = h;
+  animateBars();
+}
+
+b0El.addEventListener("click", function() { go("now"); });
+b1El.addEventListener("click", function() { go("if"); });
+
+go(cur);
 </script>
 
 </body>
