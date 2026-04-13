@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="en" style="background:#0a0e1a;color-scheme:dark">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
@@ -28,6 +28,15 @@ body{font-family:'Inter',-apple-system,sans-serif;-webkit-font-smoothing:antiali
 .tog button{flex:1;padding:12px 6px;border:none;border-radius:11px;cursor:pointer;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:#555d73;background:transparent;transition:all .3s ease;-webkit-tap-highlight-color:transparent}
 .tog button:focus-visible{outline:2px solid #34d399;outline-offset:2px}
 .tog button.on{color:#f0f2f5;background:rgba(255,255,255,.08);box-shadow:0 2px 12px rgba(0,0,0,.25)}
+.gsel{margin-bottom:18px;padding:14px 14px 10px;border-radius:14px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06)}
+.gsel-t{font-size:9px;font-weight:700;color:#555d73;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;text-align:center}
+.gsel-row{display:flex;align-items:center;gap:6px;margin-bottom:6px}
+.gsel-row:last-child{margin-bottom:0}
+.gsel-l{font-size:10px;font-weight:700;color:#555d73;min-width:58px;letter-spacing:.02em}
+.gsel-b{flex:1;padding:9px 4px;border:1px solid rgba(255,255,255,.06);border-radius:9px;cursor:pointer;font-family:'Inter',sans-serif;font-size:12px;font-weight:600;color:#555d73;background:transparent;transition:all .25s ease;-webkit-tap-highlight-color:transparent}
+.gsel-b:focus-visible{outline:2px solid #34d399;outline-offset:2px}
+.gsel-b.gw{color:#34d399;background:rgba(52,211,153,.1);border-color:rgba(52,211,153,.25)}
+.gsel-b.gl{color:#f87171;background:rgba(248,113,113,.07);border-color:rgba(248,113,113,.18)}
 .sum{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.12);border-radius:14px;padding:16px 18px;margin-bottom:16px;font-size:13px;line-height:1.55;color:#c8ccd4}
 .sum strong{color:#34d399;font-weight:700}
 .sum .dim{color:#555d73;font-size:12px;margin-top:6px}
@@ -97,6 +106,12 @@ body{font-family:'Inter',-apple-system,sans-serif;-webkit-font-smoothing:antiali
 .sls-bar{width:100%;border-radius:2px 2px 0 0}
 .sls-n{font-family:'JetBrains Mono',monospace;font-size:9px;color:#8b92a5;font-weight:700}
 .sls-p{font-family:'JetBrains Mono',monospace;font-size:7px;color:#8b92a5;font-weight:600;min-height:10px}
+.sls-tap{font-size:9px;color:#555d73;text-align:center;margin-top:8px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.sls-detail{display:none;margin-top:10px;padding:10px 12px;border-radius:10px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.04)}
+.sls-detail.open{display:block}
+.sls-dr{display:flex;justify-content:space-between;padding:3px 0;font-size:11px}
+.sls-dr-n{color:#8b92a5;font-weight:600}
+.sls-dr-p{font-family:'JetBrains Mono',monospace;font-weight:700;color:#c8ccd4}
 .sls-gap{display:flex;align-items:flex-end;justify-content:center;padding:0 2px 0}
 .sls-gap span{font-family:'JetBrains Mono',monospace;font-size:10px;color:#333a4a;font-weight:700;letter-spacing:1px;padding-bottom:4px}
 .prsp{margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,.05)}
@@ -116,7 +131,7 @@ details.src summary::-webkit-details-marker{display:none}
 .src-body{padding:0 16px 14px;font-size:11px;color:#555d73;line-height:1.6}
 .src-body p{margin-bottom:6px}
 .src-body strong{color:#8b92a5}
-.ft{text-align:center;padding:4px 0 36px;font-size:11px;color:#444b5e}
+.ft{text-align:center;padding:4px 0 36px;font-size:11px;color:#8b92a5}
 </style>
 </head>
 <body>
@@ -128,9 +143,18 @@ details.src summary::-webkit-details-marker{display:none}
   <p class="sub">Market-implied odds &middot; 2026 Play-In</p>
 </div>
 <div class="ts">Lines snapshot &middot; Apr 13, 2026</div>
-<div class="tog" role="group" aria-label="Scenario toggle">
-  <button id="b0" aria-pressed="true">Right Now</button>
-  <button id="b1" aria-pressed="false">If GSW + ORL Win</button>
+<div class="gsel" role="group" aria-label="Game outcome selector">
+  <div class="gsel-t">Tonight's games &mdash; tap to set outcomes</div>
+  <div class="gsel-row">
+    <span class="gsel-l">West 9/10</span>
+    <button class="gsel-b gw" id="g-gsw" aria-pressed="true">GSW wins</button>
+    <button class="gsel-b" id="g-lac" aria-pressed="false">LAC wins</button>
+  </div>
+  <div class="gsel-row">
+    <span class="gsel-l">East 7/8</span>
+    <button class="gsel-b gw" id="g-orl" aria-pressed="true">ORL wins</button>
+    <button class="gsel-b" id="g-phi" aria-pressed="false">PHI wins</button>
+  </div>
 </div>
 <div id="app"></div>
 <details class="src">
@@ -173,10 +197,6 @@ function signedPct(n) {
 var teams = {
   LAC: {
     name: "Clippers", code: "LAC", dotClass: "tdl",
-    /*
-      Slot #12: can only land 1-4 or 12-14.
-      null = gap marker for compressed chart.
-    */
     slots: [
       {n:"1", p:1.0}, {n:"2", p:1.1}, {n:"3", p:1.2}, {n:"4", p:1.4},
       null,
@@ -198,9 +218,6 @@ var teams = {
   },
   PHI: {
     name: "76ers", code: "PHI", dotClass: "tdp",
-    /*
-      Slot #14: can only land 1-4 or 14.
-    */
     slots: [
       {n:"1", p:0.5}, {n:"2", p:0.5}, {n:"3", p:0.6}, {n:"4", p:0.7},
       null,
@@ -220,19 +237,12 @@ var teams = {
   },
   UTA: {
     name: "Jazz", code: "UTA", dotClass: "tdj",
-    /*
-      Slot 4 or 5 (coin flip pending with SAC).
-      Slot 4: worst case pick 8 → guaranteed top-8 → 0% conveyance.
-      Slot 5: can fall to pick 9 if none of slots 1-4 are drawn → ~0.6%.
-      Blended (pre-coin-flip): ~0.3%.
-      Only possible conveyance pick: 9.
-    */
     slots: [
-      {n:"1\u20138", p:99.7, note:"Jazz keep"},
+      {n:"1\u20138", p:99.7},
       null,
       {n:"9", p:0.3}
     ],
-    possibleRange: "9 (only if slot 5 and no top-4 teams drawn)",
+    possibleRange: "9 (only if slot 5 and four teams jump)",
     prospects: [
       {lbl:"If pick conveys at 9 (0.3%)", chips:[
         {name:"Brayden Burries", c:"chg"},
@@ -246,153 +256,199 @@ var teams = {
 };
 
 /* ═══════════════════════════════════════════
-   Scenario data — all values numeric
+   Shared card templates (reused across scenarios)
+   ═══════════════════════════════════════════ */
+
+var utaCard = {
+  team: "UTA", slotLabel: "Slot #4 or #5 \u00b7 Coin Flip TBD",
+  segments: [{p:0.3,c:"sg"}, {p:99.7,c:"ss"}],
+  expected: "Near-zero chance. If Jazz win coin flip (slot 4), conveyance is <strong>impossible</strong>. Slot 5: ~0.6% of falling to pick 9.",
+  outcomes: [
+    {lb:"Conveys to OKC", ds:"Jazz fall to pick 9 (slot 5 only)",
+     pc:0.3, oc:"cg", xc:"pg"},
+    {lb:"Jazz keep", ds:"Top-8 protection holds \u2192 obligation extinguishes",
+     pc:99.7, oc:"csl", xc:"ps"}
+  ]
+};
+
+var lacElimCard = {
+  team: "LAC", slotLabel: "Eliminated \u00b7 Slot #12",
+  segments: [{p:4.7,c:"sa"}, {p:95.3,c:"sg"}],
+  expected: "Guaranteed lottery. Most likely result: <strong>pick 12</strong>.",
+  outcomes: [
+    {lb:"Conveys to OKC", ds:"Clippers eliminated, pick 12\u201314",
+     pc:95.3, oc:"cg", xc:"pg"},
+    {lb:"Top-4 jump", ds:"Includes 1.0% chance at No.\u00a01",
+     pc:4.7, oc:"ca", xc:"pa"}
+  ]
+};
+
+var lacPlayinCard = {
+  team: "LAC", slotLabel: "Final Play-In \u00b7 Slot #12",
+  segments: [{p:2.2,c:"sa"}, {p:45.3,c:"sg"}, {p:52.5,c:"ss"}],
+  expected: "LAC must win one more game. If they lose: <strong>pick 12</strong> for OKC.",
+  outcomes: [
+    {lb:"Conveys to OKC", ds:"Clippers lose final play-in, pick 12\u201314",
+     pc:45.3, oc:"cg", xc:"pg"},
+    {lb:"Does not convey", ds:"Clippers win final play-in \u2192 playoff pick (~15\u201320)",
+     pc:52.5, oc:"csl", xc:"ps"},
+    {lb:"Top-4 jump", ds:"Misses + lottery jump",
+     pc:2.2, oc:"ca", xc:"pa"}
+  ]
+};
+
+var phiPlayinCard = {
+  team: "PHI", slotLabel: "Final Play-In \u00b7 Slot #14",
+  segments: [{p:50.8,c:"sg"}, {p:1.2,c:"sr"}, {p:48,c:"ss"}],
+  expected: "If PHI conveys as lottery, it is overwhelmingly <strong>pick 14</strong>.",
+  outcomes: [
+    {lb:"Conveys to OKC", ds:"Philly loses final play-in, pick at 14",
+     pc:50.8, oc:"cg", xc:"pg"},
+    {lb:"Does not convey", ds:"Philly wins final play-in \u2192 playoff pick (~15\u201320)",
+     pc:48.0, oc:"csl", xc:"ps"},
+    {lb:"Top-4 protection hit", ds:"Misses but jumps to top 4 \u2192 Philly keeps",
+     pc:1.2, oc:"cr", xc:"pr"}
+  ]
+};
+
+var phiPlayoffsCard = {
+  team: "PHI", slotLabel: "7 Seed \u00b7 Playoffs",
+  segments: [{p:100,c:"ss"}],
+  expected: "PHI secures the 7 seed. Pick conveys as a <strong>playoff pick (~15\u201320)</strong>.",
+  outcomes: [
+    {lb:"Playoff pick to OKC", ds:"76ers make playoffs, pick in ~15\u201320 range",
+     pc:100, oc:"csl", xc:"ps"}
+  ]
+};
+
+/* ═══════════════════════════════════════════
+   4 scenario definitions
    ═══════════════════════════════════════════ */
 
 var scenarios = {
-  now: {
+  gsw_orl: {
     summary:
-      "<strong>Most likely:</strong> Clippers miss the playoffs and OKC gets a " +
-      "back-end lottery pick from LAC. The 76ers pick is unlikely to convey " +
-      "\u2014 Philly is heavily favored to make the playoffs." +
-      "<div class='dim'>Tonight\u2019s play-in games could change everything.</div>",
-    rooting: [
-      {icon:"🏀", game:"Warriors vs Clippers", best:"GSW",
-       why:"Eliminates LAC \u2192 guaranteed lottery asset"},
-      {icon:"🏀", game:"Magic vs 76ers", best:"ORL",
-       why:"Forces Philly into must-win \u2192 ~53% miss playoffs"}
-    ],
-    keys: [
-      {v:68,  label:"LAC PICK<br>BECOMES LOTTERY", c:"#34d399"},
-      {v:25,  label:"PHI PICK<br>CONVEYS TO OKC",  c:"#34d399"},
-      {v:4.7, label:"LAC PICK<br>LANDS TOP 4",     c:"#fbbf24"}
-    ],
-    bwl: {
-      likely: "OKC gets LAC lottery pick only (back-end, 12\u201314)",
-      best:   "All three picks convey \u2014 LAC, PHI, and Jazz",
-      chaos:  "LAC top-4 jump (4.7%) or Jazz fall to 9 (0.3%)",
-      worst:  "Both teams make playoffs \u2014 OKC gets late 1sts (~15\u201320 range)"
-    },
-    cards: [
-      {
-        team: "LAC", slotLabel: "Lottery Slot #12",
-        segments: [{p:4.7,c:"sa"}, {p:63.3,c:"sg"}, {p:32,c:"ss"}],
-        expected: "Most likely result: <strong>pick 12</strong>. Upside tail: 4.7% top-4 jump.",
-        outcomes: [
-          {lb:"Conveys to OKC",  ds:"Clippers miss playoffs, pick 12\u201314",
-           pc:63.3, oc:"cg", xc:"pg"},
-          {lb:"Does not convey", ds:"Clippers make playoffs",
-           pc:32.0, oc:"csl", xc:"ps"},
-          {lb:"Top-4 jump",      ds:"Includes 1.0% chance at No.\u00a01",
-           pc:4.7, oc:"ca", xc:"pa"}
-        ]
-      },
-      {
-        team: "PHI", slotLabel: "Lottery Slot #14",
-        segments: [{p:24.4,c:"sg"}, {p:0.6,c:"sr"}, {p:75,c:"ss"}],
-        expected: "If PHI conveys, it is overwhelmingly <strong>pick 14</strong>.",
-        outcomes: [
-          {lb:"Conveys to OKC",       ds:"Philly misses playoffs, pick at 14",
-           pc:24.4, oc:"cg", xc:"pg"},
-          {lb:"Does not convey",      ds:"76ers make playoffs",
-           pc:75.0, oc:"csl", xc:"ps"},
-          {lb:"Top-4 protection hit", ds:"Misses but jumps to top 4 \u2192 Philly keeps",
-           pc:0.6, oc:"cr", xc:"pr"}
-        ]
-      },
-      {
-        team: "UTA", slotLabel: "Slot #4 or #5 \u00b7 Coin Flip TBD",
-        segments: [{p:0.3,c:"sg"}, {p:99.7,c:"ss"}],
-        expected: "Near-zero chance. If Jazz win coin flip (slot 4), conveyance is <strong>impossible</strong>. Slot 5: ~0.6% of falling to pick 9.",
-        outcomes: [
-          {lb:"Conveys to OKC",      ds:"Jazz fall to pick 9 (slot 5 only)",
-           pc:0.3, oc:"cg", xc:"pg"},
-          {lb:"Jazz keep",           ds:"Top-8 protection holds \u2192 obligation extinguishes",
-           pc:99.7, oc:"csl", xc:"ps"}
-        ]
-      }
-    ]
-  },
-
-  "if": {
-    summary:
-      "<strong>This scenario is huge for OKC.</strong> The Clippers are " +
-      "eliminated and their pick is guaranteed to land in the lottery. " +
-      "Philly is pushed to a must-win final play-in \u2014 roughly a " +
-      "coin flip to miss the playoffs." +
+      "<strong>Best case for OKC.</strong> The Clippers are eliminated " +
+      "and their pick is guaranteed lottery. Philly is pushed to a must-win " +
+      "final play-in \u2014 roughly a coin flip to miss the playoffs." +
       "<div class='dim'>Two live lottery assets is the Thunder\u2019s dream board.</div>",
     rooting: [
       {icon:"\u2705", game:"Warriors beat Clippers", best:"Done",
        why:"LAC eliminated \u2014 locked into lottery at slot #12"},
-      {icon:"🏀", game:"76ers vs TBD (final play-in)", best:"Opponent",
-       why:"One more Philly loss \u2192 pick conveys to OKC"}
+      {icon:"\uD83C\uDFC0", game:"76ers vs TBD (final play-in)", best:"Opponent",
+       why:"One more Philly loss \u2192 pick conveys as lottery"}
     ],
     keys: [
       {v:100, label:"LAC PICK<br>BECOMES LOTTERY", c:"#34d399"},
-      {v:52,  label:"PHI PICK<br>CONVEYS TO OKC",  c:"#34d399"},
+      {v:52,  label:"PHI PICK<br>LOTTERY TO OKC",  c:"#34d399"},
       {v:4.7, label:"LAC PICK<br>LANDS TOP 4",     c:"#fbbf24"}
     ],
     bwl: {
       likely: "OKC locks in LAC lottery asset; PHI is a coin flip",
       best:   "All three picks convey \u2014 LAC, PHI, and Jazz",
       chaos:  "LAC top-4 jump (4.7%) or Jazz fall to 9 (0.3%)",
-      worst:  "Philly wins final play-in \u2014 OKC gets LAC lottery pick + PHI in the ~15\u201320 range"
+      worst:  "Philly wins final play-in \u2014 OKC gets LAC lottery + PHI ~15\u201320"
     },
-    cards: [
-      {
-        team: "LAC", slotLabel: "Eliminated \u00b7 Slot #12",
-        segments: [{p:4.7,c:"sa"}, {p:95.3,c:"sg"}],
-        expected: "Guaranteed lottery. Most likely result: <strong>pick 12</strong>.",
-        outcomes: [
-          {lb:"Conveys to OKC", ds:"Clippers eliminated, pick 12\u201314",
-           pc:95.3, oc:"cg", xc:"pg"},
-          {lb:"Top-4 jump",     ds:"Includes 1.0% chance at No.\u00a01",
-           pc:4.7, oc:"ca", xc:"pa"}
-        ]
-      },
-      {
-        team: "PHI", slotLabel: "Must-Win \u00b7 Slot #14",
-        segments: [{p:50.8,c:"sg"}, {p:1.2,c:"sr"}, {p:48,c:"ss"}],
-        expected: "If PHI conveys, it is overwhelmingly <strong>pick 14</strong>.",
-        outcomes: [
-          {lb:"Conveys to OKC",       ds:"Philly loses final play-in, pick at 14",
-           pc:50.8, oc:"cg", xc:"pg"},
-          {lb:"Does not convey",      ds:"Philly wins final play-in",
-           pc:48.0, oc:"csl", xc:"ps"},
-          {lb:"Top-4 protection hit", ds:"Misses but jumps to top 4 \u2192 Philly keeps",
-           pc:1.2, oc:"cr", xc:"pr"}
-        ]
-      },
-      {
-        team: "UTA", slotLabel: "Slot #4 or #5 \u00b7 Coin Flip TBD",
-        segments: [{p:0.3,c:"sg"}, {p:99.7,c:"ss"}],
-        expected: "Near-zero chance. If Jazz win coin flip (slot 4), conveyance is <strong>impossible</strong>. Slot 5: ~0.6% of falling to pick 9.",
-        outcomes: [
-          {lb:"Conveys to OKC",      ds:"Jazz fall to pick 9 (slot 5 only)",
-           pc:0.3, oc:"cg", xc:"pg"},
-          {lb:"Jazz keep",           ds:"Top-8 protection holds \u2192 obligation extinguishes",
-           pc:99.7, oc:"csl", xc:"ps"}
-        ]
-      }
-    ]
+    cards: [lacElimCard, phiPlayinCard, utaCard]
+  },
+
+  gsw_phi: {
+    summary:
+      "<strong>LAC is eliminated</strong> \u2014 guaranteed lottery asset for OKC. " +
+      "Philly secures the 7 seed and heads to the playoffs. " +
+      "Their pick still conveys, but as a mid-to-late first (~15\u201320)." +
+      "<div class='dim'>One lottery pick locked in. Solid floor.</div>",
+    rooting: [
+      {icon:"\u2705", game:"Warriors beat Clippers", best:"Done",
+       why:"LAC eliminated \u2014 locked into lottery at slot #12"},
+      {icon:"\u274C", game:"76ers beat Magic", best:"\u2014",
+       why:"PHI to playoffs \u2014 pick conveys as ~15\u201320"}
+    ],
+    keys: [
+      {v:100, label:"LAC PICK<br>BECOMES LOTTERY", c:"#34d399"},
+      {v:0,   label:"PHI PICK<br>LOTTERY TO OKC",  c:"#555d73"},
+      {v:4.7, label:"LAC PICK<br>LANDS TOP 4",     c:"#fbbf24"}
+    ],
+    bwl: {
+      likely: "OKC gets LAC lottery pick (12\u201314) + PHI playoff pick (~15\u201320)",
+      best:   "LAC jumps to top 4 (4.7%)",
+      chaos:  "Jazz falls to 9 (0.3%) \u2014 surprise third asset",
+      worst:  "This IS the floor \u2014 two picks locked in, both mid-to-late 1st"
+    },
+    cards: [lacElimCard, phiPlayoffsCard, utaCard]
+  },
+
+  lac_orl: {
+    summary:
+      "<strong>Both teams dropped to must-win final play-in games.</strong> " +
+      "OKC\u2019s draft haul hinges on whether LAC and PHI can survive one more game." +
+      "<div class='dim'>Maximum volatility \u2014 could swing big either way.</div>",
+    rooting: [
+      {icon:"\u274C", game:"Clippers beat Warriors", best:"\u2014",
+       why:"LAC advances to final play-in \u2014 not eliminated yet"},
+      {icon:"\u2705", game:"Magic beat 76ers", best:"Done",
+       why:"PHI drops to must-win final play-in"},
+      {icon:"\uD83C\uDFC0", game:"LAC final play-in", best:"Opponent",
+       why:"LAC loss \u2192 lottery pick for OKC"},
+      {icon:"\uD83C\uDFC0", game:"PHI final play-in", best:"Opponent",
+       why:"PHI loss \u2192 lottery pick for OKC"}
+    ],
+    keys: [
+      {v:47.5, label:"LAC PICK<br>BECOMES LOTTERY", c:"#34d399"},
+      {v:52,   label:"PHI PICK<br>LOTTERY TO OKC",  c:"#34d399"},
+      {v:2.2,  label:"LAC PICK<br>LANDS TOP 4",     c:"#fbbf24"}
+    ],
+    bwl: {
+      likely: "Both in must-win games \u2014 OKC could land 0, 1, or 2 lottery picks",
+      best:   "Both miss \u2192 two lottery assets + Jazz somehow conveys",
+      chaos:  "LAC top-4 jump if they miss (2.2%)",
+      worst:  "Both win final play-ins \u2014 OKC gets two playoff picks (~15\u201320)"
+    },
+    cards: [lacPlayinCard, phiPlayinCard, utaCard]
+  },
+
+  lac_phi: {
+    summary:
+      "<strong>Toughest draw for OKC tonight.</strong> " +
+      "Clippers survive to a final play-in \u2014 lottery still possible but not certain. " +
+      "Philly secures the 7 seed; their pick conveys as a playoff selection." +
+      "<div class='dim'>LAC\u2019s final play-in is the last shot at a lottery asset.</div>",
+    rooting: [
+      {icon:"\u274C", game:"Clippers beat Warriors", best:"\u2014",
+       why:"LAC advances to final play-in"},
+      {icon:"\u274C", game:"76ers beat Magic", best:"\u2014",
+       why:"PHI to playoffs \u2014 pick conveys as ~15\u201320"},
+      {icon:"\uD83C\uDFC0", game:"LAC final play-in", best:"Opponent",
+       why:"LAC loss \u2192 lottery pick for OKC"}
+    ],
+    keys: [
+      {v:47.5, label:"LAC PICK<br>BECOMES LOTTERY", c:"#34d399"},
+      {v:0,    label:"PHI PICK<br>LOTTERY TO OKC",  c:"#555d73"},
+      {v:2.2,  label:"LAC PICK<br>LANDS TOP 4",     c:"#fbbf24"}
+    ],
+    bwl: {
+      likely: "OKC gets PHI playoff pick (~15\u201320); LAC is a coin flip in final play-in",
+      best:   "LAC misses playoffs \u2192 lottery pick for OKC",
+      chaos:  "LAC top-4 jump if they miss (2.2%)",
+      worst:  "LAC makes playoffs too \u2014 OKC gets two playoff picks (~15\u201320)"
+    },
+    cards: [lacPlayinCard, phiPlayoffsCard, utaCard]
   }
 };
 
 /* ═══════════════════════════════════════════
-   Compute deltas from baseline
+   Compute deltas vs best-case scenario
    ═══════════════════════════════════════════ */
 
-var deltaLabels = ["LAC lottery", "PHI convey", "LAC top 4"];
+var deltaLabels = ["LAC lottery", "PHI lottery", "LAC top 4"];
 
 function buildDeltas(base, scen) {
   var out = [];
   for (var i = 0; i < base.keys.length; i++) {
-    out.push({
-      lbl:   deltaLabels[i],
-      from:  base.keys[i].v,
-      to:    scen.keys[i].v,
-      delta: +(scen.keys[i].v - base.keys[i].v).toFixed(1)
-    });
+    var d = +(scen.keys[i].v - base.keys[i].v).toFixed(1);
+    if (d !== 0) {
+      out.push({ lbl: deltaLabels[i], from: base.keys[i].v, to: scen.keys[i].v, delta: d });
+    }
   }
   return out;
 }
@@ -401,24 +457,20 @@ function buildDeltas(base, scen) {
    Render components
    ═══════════════════════════════════════════ */
 
-function renderSummary(text) {
-  return '<div class="sum">' + text + '</div>';
-}
+function renderSummary(text) { return '<div class="sum">' + text + '</div>'; }
 
 function renderBWL(bwl) {
   var rows = [
-    {icon:"🎯", label:"Most likely",   text: bwl.likely},
-    {icon:"🚀", label:"Best case",      text: bwl.best},
-    {icon:"🎰", label:"Chaos jackpot",  text: bwl.chaos},
-    {icon:"🚫", label:"Worst case",     text: bwl.worst}
+    {icon:"\uD83C\uDFAF", label:"Most likely",  text: bwl.likely},
+    {icon:"\uD83D\uDE80", label:"Best case",     text: bwl.best},
+    {icon:"\uD83C\uDFB0", label:"Chaos jackpot", text: bwl.chaos},
+    {icon:"\uD83D\uDEAB", label:"Worst case",    text: bwl.worst}
   ];
   var h = '<div class="bwl"><div class="bwl-t">Scenario at a glance</div>';
   for (var i = 0; i < rows.length; i++) {
-    h += '<div class="bwl-r">' +
-         '<div class="bwl-i">' + rows[i].icon + '</div>' +
+    h += '<div class="bwl-r"><div class="bwl-i">' + rows[i].icon + '</div>' +
          '<div class="bwl-l">' + rows[i].label + '</div>' +
-         '<div class="bwl-d">' + rows[i].text + '</div>' +
-         '</div>';
+         '<div class="bwl-d">' + rows[i].text + '</div></div>';
   }
   return h + '</div>';
 }
@@ -427,14 +479,10 @@ function renderRooting(rg) {
   var h = '<div class="rg">';
   for (var i = 0; i < rg.length; i++) {
     var r = rg[i];
-    h += '<div class="ri">' +
-         '<div class="ri-i">' + r.icon + '</div>' +
-         '<div class="ri-f">' +
-           '<div class="ri-g">' + r.game + '</div>' +
-           '<div class="ri-w">' + r.why + '</div>' +
-         '</div>' +
-         '<span class="ri-t">Root ' + r.best + '</span>' +
-         '</div>';
+    h += '<div class="ri"><div class="ri-i">' + r.icon + '</div>' +
+         '<div class="ri-f"><div class="ri-g">' + r.game + '</div>' +
+         '<div class="ri-w">' + r.why + '</div></div>' +
+         '<span class="ri-t">Root ' + r.best + '</span></div>';
   }
   return h + '</div>';
 }
@@ -442,29 +490,26 @@ function renderRooting(rg) {
 function renderKeys(keys) {
   var h = '<div class="ks">';
   for (var i = 0; i < keys.length; i++) {
-    h += '<div class="kn">' +
-         '<span class="v" style="color:' + keys[i].c + '">' + pct(keys[i].v) + '</span>' +
-         '<span class="l">' + keys[i].label + '</span>' +
-         '</div>';
+    h += '<div class="kn"><span class="v" style="color:' + keys[i].c + '">' +
+         pct(keys[i].v) + '</span><span class="l">' + keys[i].label + '</span></div>';
   }
   return h + '</div>';
 }
 
 function renderDeltas(deltas) {
+  if (!deltas.length) return '';
   var h = '<div class="deltas">';
   for (var i = 0; i < deltas.length; i++) {
     var d = deltas[i];
-    var cls = d.delta > 0 ? "dlt-u" : "dlt-0";
-    h += '<div class="dlt">' +
-         '<span class="dlt-l">' + d.lbl + '</span> ' +
+    var cls = d.delta < 0 ? "dlt-0" : "dlt-u";
+    h += '<div class="dlt"><span class="dlt-l">' + d.lbl + '</span> ' +
          pct(d.from) + ' \u2192 ' + pct(d.to) + ' ' +
-         '<span class="' + cls + '">' + signedPct(d.delta) + '</span>' +
-         '</div>';
+         '<span class="' + cls + '">' + signedPct(d.delta) + '</span></div>';
   }
   return h + '</div>';
 }
 
-function renderSlotChart(slotData) {
+function renderSlotChart(slotData, cardId) {
   var maxP = 0;
   for (var i = 0; i < slotData.length; i++) {
     if (slotData[i] && slotData[i].p > maxP) maxP = slotData[i].p;
@@ -472,28 +517,39 @@ function renderSlotChart(slotData) {
   var h = '<div class="sls-b">';
   for (var i = 0; i < slotData.length; i++) {
     var s = slotData[i];
-    if (s === null) {
-      h += '<div class="sls-gap"><span>\u00b7\u00b7\u00b7</span></div>';
-      continue;
-    }
+    if (s === null) { h += '<div class="sls-gap"><span>\u00b7\u00b7\u00b7</span></div>'; continue; }
     var bH = s.p === 0 ? 0 : Math.max(3, Math.round((s.p / maxP) * 42));
-    var barColor = s.p >= 5 ? "#34d399" : "#fbbf24";
-    h += '<div class="sls-c">' +
-         '<div class="sls-p">' + (s.p >= 5 ? Math.round(s.p) + '%' : s.p.toFixed(1) + '%') + '</div>' +
-         '<div class="sls-bar" style="height:' + bH + 'px;background:' + barColor + '"></div>' +
-         '<div class="sls-n">' + s.n + '</div>' +
-         '</div>';
+    var clr = s.p >= 5 ? "#34d399" : "#fbbf24";
+    h += '<div class="sls-c"><div class="sls-p">' +
+         (s.p >= 5 ? Math.round(s.p) + '%' : s.p.toFixed(1) + '%') +
+         '</div><div class="sls-bar" style="height:' + bH + 'px;background:' + clr +
+         '"></div><div class="sls-n">' + s.n + '</div></div>';
   }
-  return h + '</div>';
+  h += '</div>';
+  h += '<div class="sls-tap" onclick="toggleSlotDetail(\'' + cardId + '\')">Tap for exact odds</div>';
+  h += '<div class="sls-detail" id="sls-d-' + cardId + '">';
+  var top4 = 0;
+  for (var i = 0; i < slotData.length; i++) {
+    var s = slotData[i];
+    if (s === null) continue;
+    h += '<div class="sls-dr"><span class="sls-dr-n">Pick ' + s.n +
+         '</span><span class="sls-dr-p">' + s.p.toFixed(1) + '%</span></div>';
+    if (parseInt(s.n) <= 4) top4 += s.p;
+  }
+  if (top4 > 0) {
+    h += '<div class="sls-dr" style="border-top:1px solid rgba(255,255,255,.05);margin-top:4px;padding-top:4px">' +
+         '<span class="sls-dr-n">Top 4 combined</span>' +
+         '<span class="sls-dr-p" style="color:#fbbf24">' + top4.toFixed(1) + '%</span></div>';
+  }
+  h += '</div>';
+  return h;
 }
 
 function renderProspects(prospects) {
   var h = '';
   for (var j = 0; j < prospects.length; j++) {
     var pr = prospects[j];
-    h += '<div class="prsp-r">' +
-         '<div class="prsp-l">' + pr.lbl + '</div>' +
-         '<div class="chips">';
+    h += '<div class="prsp-r"><div class="prsp-l">' + pr.lbl + '</div><div class="chips">';
     for (var m = 0; m < pr.chips.length; m++) {
       h += '<span class="chip ' + pr.chips[m].c + '">' + pr.chips[m].name + '</span>';
     }
@@ -503,127 +559,106 @@ function renderProspects(prospects) {
   return h;
 }
 
+var cardCounter = 0;
+
 function renderCard(card) {
   var t = teams[card.team];
+  var cid = "c" + (cardCounter++);
   var h = '<div class="cd">';
-
-  /* Header */
-  h += '<div class="ct">' +
-       '<div class="ctm">' +
-         '<div class="tdot ' + t.dotClass + '"></div>' +
-         '<b>' + t.name + '</b>' +
-         '<em>' + t.code + '</em>' +
-       '</div>' +
-       '<div class="sl">' + card.slotLabel + '</div>' +
-       '</div>';
-
-  /* Stacked bar */
+  h += '<div class="ct"><div class="ctm"><div class="tdot ' + t.dotClass + '"></div>' +
+       '<b>' + t.name + '</b><em>' + t.code + '</em></div>' +
+       '<div class="sl">' + card.slotLabel + '</div></div>';
   h += '<div class="sb">';
   for (var j = 0; j < card.segments.length; j++) {
     h += '<span class="seg ' + card.segments[j].c + '" data-w="' + card.segments[j].p + '"></span>';
   }
-  h += '</div>';
-
-  /* Outcome rows */
-  h += '<div class="os">';
+  h += '</div><div class="os">';
   for (var j = 0; j < card.outcomes.length; j++) {
     var o = card.outcomes[j];
-    h += '<div class="orow">' +
-         '<div class="oc ' + o.oc + '"></div>' +
-         '<div class="oi">' +
-           '<div class="ol">' + o.lb + '</div>' +
-           '<div class="od">' + o.ds + '</div>' +
-         '</div>' +
-         '<div class="op ' + o.xc + '">' + pct(o.pc) + '</div>' +
-         '</div>';
+    h += '<div class="orow"><div class="oc ' + o.oc + '"></div><div class="oi">' +
+         '<div class="ol">' + o.lb + '</div><div class="od">' + o.ds + '</div></div>' +
+         '<div class="op ' + o.xc + '">' + pct(o.pc) + '</div></div>';
   }
-  h += '</div>';
-
-  /* Expected outcome callout */
-  h += '<div class="exp">' + card.expected + '</div>';
-
-  /* Compressed slot chart */
-  h += '<div class="sls">' +
-       '<div class="sls-t">Pick slot distribution (if lottery)</div>' +
+  h += '</div><div class="exp">' + card.expected + '</div>';
+  h += '<div class="sls"><div class="sls-t">Pick slot distribution (if lottery)</div>' +
        '<div class="sls-note">Only slots ' + t.possibleRange + ' are possible</div>' +
-       renderSlotChart(t.slots) +
-       '</div>';
-
-  /* Prospects */
-  h += '<div class="prsp">' +
-       '<div class="prsp-t">Names often mocked in this range</div>' +
-       renderProspects(t.prospects) +
-       '</div>';
-
+       renderSlotChart(t.slots, cid) + '</div>';
+  h += '<div class="prsp"><div class="prsp-t">Names often mocked in this range</div>' +
+       renderProspects(t.prospects) + '</div>';
   return h + '</div>';
 }
 
 /* ═══════════════════════════════════════════
-   Bar animation helper
+   Slot chart tap-to-expand
+   ═══════════════════════════════════════════ */
+
+function toggleSlotDetail(cid) {
+  var el = document.getElementById("sls-d-" + cid);
+  if (el) el.classList.toggle("open");
+}
+
+/* ═══════════════════════════════════════════
+   Bar animation
    ═══════════════════════════════════════════ */
 
 function animateBars() {
   requestAnimationFrame(function() {
     requestAnimationFrame(function() {
       var segs = document.querySelectorAll(".sb .seg");
-      for (var i = 0; i < segs.length; i++) {
-        segs[i].style.width = segs[i].dataset.w + "%";
-      }
+      for (var i = 0; i < segs.length; i++) segs[i].style.width = segs[i].dataset.w + "%";
     });
   });
 }
 
 /* ═══════════════════════════════════════════
-   State management & main render
+   State — game outcome toggles
    ═══════════════════════════════════════════ */
 
 var appEl = document.getElementById("app");
-var b0El  = document.getElementById("b0");
-var b1El  = document.getElementById("b1");
+var gGsw = document.getElementById("g-gsw");
+var gLac = document.getElementById("g-lac");
+var gOrl = document.getElementById("g-orl");
+var gPhi = document.getElementById("g-phi");
 
-/* Init from URL hash (safe in sandboxed iframes) */
-var hash = "";
-try { hash = location.hash.replace("#", ""); } catch(e) {}
-var cur  = (hash === "if" || hash === "now") ? hash : "now";
+var west = "gsw", east = "orl";
 
-function go(k) {
-  cur = k;
-  try { history.replaceState(null, "", "#" + k); } catch(e) {}
-
-  b0El.classList.toggle("on", k === "now");
-  b1El.classList.toggle("on", k === "if");
-  b0El.setAttribute("aria-pressed", k === "now");
-  b1El.setAttribute("aria-pressed", k === "if");
-
-  render();
+function updateToggles() {
+  gGsw.className = "gsel-b " + (west === "gsw" ? "gw" : "gl");
+  gLac.className = "gsel-b " + (west === "lac" ? "gw" : "gl");
+  gOrl.className = "gsel-b " + (east === "orl" ? "gw" : "gl");
+  gPhi.className = "gsel-b " + (east === "phi" ? "gw" : "gl");
+  gGsw.setAttribute("aria-pressed", west === "gsw");
+  gLac.setAttribute("aria-pressed", west === "lac");
+  gOrl.setAttribute("aria-pressed", east === "orl");
+  gPhi.setAttribute("aria-pressed", east === "phi");
 }
 
-function render() {
-  var d = scenarios[cur];
-  var h = "";
+function setWest(w) { west = w; updateToggles(); render(); }
+function setEast(e) { east = e; updateToggles(); render(); }
 
+gGsw.addEventListener("click", function() { setWest("gsw"); });
+gLac.addEventListener("click", function() { setWest("lac"); });
+gOrl.addEventListener("click", function() { setEast("orl"); });
+gPhi.addEventListener("click", function() { setEast("phi"); });
+
+function render() {
+  cardCounter = 0;
+  var key = west + "_" + east;
+  var d = scenarios[key];
+  var best = scenarios.gsw_orl;
+  var h = "";
   h += renderSummary(d.summary);
   h += renderBWL(d.bwl);
   h += renderRooting(d.rooting);
   h += renderKeys(d.keys);
-
-  /* Deltas are computed, not hardcoded */
-  if (cur === "if") {
-    h += renderDeltas(buildDeltas(scenarios.now, d));
-  }
-
-  for (var i = 0; i < d.cards.length; i++) {
-    h += renderCard(d.cards[i]);
-  }
-
+  if (key !== "gsw_orl") h += renderDeltas(buildDeltas(best, d));
+  for (var i = 0; i < d.cards.length; i++) h += renderCard(d.cards[i]);
   appEl.innerHTML = h;
   animateBars();
 }
 
-b0El.addEventListener("click", function() { go("now"); });
-b1El.addEventListener("click", function() { go("if"); });
-
-go(cur);
+updateToggles();
+render();
 </script>
 
 </body>
