@@ -3,7 +3,7 @@
 <html lang="en" style="background:#0a0e1a;color-scheme:dark">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="color-scheme" content="dark">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -13,298 +13,480 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
 <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-html, body {
-background-color: #0a0e1a !important;
-color: #f0f2f5 !important;
-color-scheme: dark;
-}
-
-body {
-font-family: ‘Inter’, -apple-system, BlinkMacSystemFont, sans-serif;
--webkit-font-smoothing: antialiased;
--moz-osx-font-smoothing: grayscale;
-min-height: 100dvh;
-padding: 0 20px env(safe-area-inset-bottom);
-max-width: 440px;
-margin: 0 auto;
-overflow-x: hidden;
-}
-
-/* Ambient glow */
-.glow {
-position: fixed; top: -140px; left: 50%; transform: translateX(-50%);
-width: 400px; height: 400px;
-background: radial-gradient(circle, rgba(0,122,193,0.15) 0%, rgba(239,97,0,0.07) 45%, transparent 70%);
-pointer-events: none; z-index: 0;
-}
-.wrap { position: relative; z-index: 1; }
-
-/* ─── Header ─── */
-.hdr { padding: 44px 0 24px; text-align: center; }
-.mark {
-display: inline-flex; align-items: center; justify-content: center;
-width: 48px; height: 48px; border-radius: 14px;
-background: linear-gradient(135deg, #007ac1 0%, #ef6100 100%);
-margin-bottom: 14px; font-size: 24px;
-box-shadow: 0 6px 32px rgba(0,122,193,0.35), 0 2px 8px rgba(239,97,0,0.2);
-}
-.hdr h1 {
-font-family: ‘JetBrains Mono’, monospace;
-font-size: 16px; font-weight: 800; letter-spacing: 0.14em;
-text-transform: uppercase; color: #f0f2f5; margin-bottom: 5px;
-}
-.hdr .sub {
-font-size: 12px; color: #555d73; font-weight: 500; letter-spacing: 0.02em;
-}
-
-/* ─── Toggle ─── */
-.tog {
-display: flex;
-background: rgba(255,255,255,0.04);
-border: 1px solid rgba(255,255,255,0.07);
-border-radius: 14px; padding: 4px; margin-bottom: 20px;
-}
-.tog button {
-flex: 1; padding: 13px 8px; border: none; border-radius: 11px; cursor: pointer;
-font-family: ‘Inter’, sans-serif; font-size: 13px; font-weight: 600;
-color: #555d73; background: transparent;
-transition: all 0.3s cubic-bezier(.4,0,.2,1);
--webkit-tap-highlight-color: transparent;
-}
-.tog button.on {
-color: #f0f2f5;
-background: rgba(255,255,255,0.08);
-box-shadow: 0 2px 12px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.05);
-}
-
-/* ─── Badge ─── */
-.bdg { text-align: center; margin-bottom: 20px; min-height: 28px; }
-.bdg span {
-display: inline-block; padding: 6px 16px; border-radius: 100px;
-font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
-}
-.bdg-d { background: rgba(139,146,165,0.08); color: #8b92a5; }
-.bdg-s { background: rgba(251,191,36,0.1); color: #fbbf24; }
-
-/* ─── Key Stats ─── */
-.ks { display: flex; gap: 8px; margin-bottom: 22px; }
-.kn {
-flex: 1; text-align: center; padding: 16px 4px 14px;
-border-radius: 14px;
-background: rgba(255,255,255,0.03);
-border: 1px solid rgba(255,255,255,0.06);
-}
-.kn .v {
-font-family: ‘JetBrains Mono’, monospace;
-font-size: 24px; font-weight: 800; letter-spacing: -0.04em;
-display: block; margin-bottom: 4px; line-height: 1;
-}
-.kn .l {
-font-size: 9px; font-weight: 700; color: #555d73;
-text-transform: uppercase; letter-spacing: 0.07em; line-height: 1.35;
-}
-
-/* ─── Cards ─── */
-.cd {
-background: rgba(255,255,255,0.025);
-border: 1px solid rgba(255,255,255,0.06);
-border-radius: 18px; padding: 20px; margin-bottom: 14px;
-opacity: 0; transform: translateY(14px);
-animation: up 0.5s ease forwards;
-}
-.cd + .cd { animation-delay: 0.12s; }
-@keyframes up { to { opacity: 1; transform: translateY(0); } }
-
-.ct {
-display: flex; align-items: center; justify-content: space-between;
-margin-bottom: 16px;
-}
-.ctm { display: flex; align-items: center; gap: 10px; }
-.td {
-width: 11px; height: 11px; border-radius: 3px; flex-shrink: 0;
-}
-.td-l { background: #c8102e; box-shadow: 0 0 10px rgba(200,16,46,0.5); }
-.td-p { background: #006bb6; box-shadow: 0 0 10px rgba(0,107,182,0.5); }
-.ctm b { font-size: 15px; font-weight: 700; color: #f0f2f5; letter-spacing: -0.01em; }
-.ctm em {
-font-style: normal; font-size: 11px; color: #555d73; font-weight: 600;
-margin-left: 4px; letter-spacing: 0.05em; text-transform: uppercase;
-}
-.sl {
-font-family: ‘JetBrains Mono’, monospace; font-size: 10px; font-weight: 700;
-color: #555d73; background: rgba(255,255,255,0.04);
-padding: 4px 10px; border-radius: 8px; letter-spacing: 0.03em;
-}
-
-/* ─── Stacked bar ─── */
-.sb {
-display: flex; height: 8px; border-radius: 4px; overflow: hidden;
-margin-bottom: 18px; background: rgba(255,255,255,0.03); gap: 2px;
-}
-.sb i {
-display: block; height: 100%; border-radius: 3px; font-style: normal;
-transition: width 1s cubic-bezier(.25,.8,.25,1); width: 0;
-}
-.sg { background: #34d399; }
-.sa { background: #fbbf24; }
-.sr { background: #f87171; }
-.ss { background: #475569; }
-
-/* ─── Rows ─── */
-.os { display: flex; flex-direction: column; gap: 6px; }
-.or {
-display: flex; align-items: center; gap: 12px;
-padding: 12px 14px; border-radius: 12px;
-background: rgba(255,255,255,0.02);
-border: 1px solid rgba(255,255,255,0.03);
-}
-.oc { width: 3px; height: 32px; border-radius: 2px; flex-shrink: 0; }
-.cg { background: #34d399; }
-.ca { background: #fbbf24; }
-.cr { background: #f87171; }
-.cs { background: #475569; }
-.oi { flex: 1; min-width: 0; }
-.ol { font-size: 13px; font-weight: 700; color: #f0f2f5; line-height: 1.3; letter-spacing: -0.01em; }
-.od { font-size: 11px; color: #555d73; margin-top: 2px; line-height: 1.3; font-weight: 500; }
-.op {
-font-family: ‘JetBrains Mono’, monospace; font-size: 20px; font-weight: 800;
-letter-spacing: -0.04em; text-align: right; flex-shrink: 0; min-width: 64px;
-}
-.pg { color: #34d399; }
-.pa { color: #fbbf24; }
-.pr { color: #f87171; }
-.ps { color: #64748b; }
-
-/* ─── Footer ─── */
-.ft {
-text-align: center; padding: 20px 8px 40px;
-font-size: 11px; color: #555d73; line-height: 1.65;
-}
-.ft strong { color: #8b92a5; font-weight: 600; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{background-color:#0a0e1a!important;color:#f0f2f5!important;color-scheme:dark}
+body{font-family:'Inter',-apple-system,sans-serif;-webkit-font-smoothing:antialiased;min-height:100dvh;padding:0 18px env(safe-area-inset-bottom);max-width:440px;margin:0 auto;overflow-x:hidden}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.glow{position:fixed;top:-140px;left:50%;transform:translateX(-50%);width:400px;height:400px;background:radial-gradient(circle,rgba(0,122,193,.15),rgba(239,97,0,.07) 45%,transparent 70%);pointer-events:none;z-index:0}
+.wrap{position:relative;z-index:1}
+.hdr{padding:44px 0 20px;text-align:center}
+.mark{display:inline-flex;align-items:center;justify-content:center;width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,#007ac1,#ef6100);margin-bottom:12px;font-size:24px;box-shadow:0 6px 32px rgba(0,122,193,.35),0 2px 8px rgba(239,97,0,.2)}
+.hdr h1{font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#f0f2f5;margin-bottom:4px}
+.hdr .sub{font-size:12px;color:#555d73;font-weight:500}
+.tog{display:flex;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:4px;margin-bottom:18px}
+.tog button{flex:1;padding:12px 6px;border:none;border-radius:11px;cursor:pointer;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:#555d73;background:transparent;transition:all .3s ease;-webkit-tap-highlight-color:transparent}
+.tog button.on{color:#f0f2f5;background:rgba(255,255,255,.08);box-shadow:0 2px 12px rgba(0,0,0,.25)}
+.sum{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.12);border-radius:14px;padding:16px 18px;margin-bottom:16px;font-size:13px;line-height:1.55;color:#c8ccd4}
+.sum strong{color:#34d399;font-weight:700}
+.sum .dim{color:#555d73;font-size:12px;margin-top:6px}
+.rg{display:flex;flex-direction:column;gap:8px;margin-bottom:18px}
+.ri{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.05)}
+.ri-i{font-size:18px;flex-shrink:0;width:28px;text-align:center}
+.ri-f{flex:1}
+.ri-g{font-size:13px;font-weight:700;color:#f0f2f5}
+.ri-w{font-size:11px;color:#555d73;margin-top:2px}
+.ri-t{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;padding:4px 8px;border-radius:6px;flex-shrink:0;background:rgba(52,211,153,.12);color:#34d399}
+.ks{display:flex;gap:8px;margin-bottom:18px}
+.kn{flex:1;text-align:center;padding:14px 4px 12px;border-radius:14px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06)}
+.kn .v{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:800;letter-spacing:-.04em;display:block;margin-bottom:3px;line-height:1}
+.kn .l{font-size:9px;font-weight:700;color:#555d73;text-transform:uppercase;letter-spacing:.06em;line-height:1.35}
+.deltas{display:flex;gap:6px;margin-bottom:18px;flex-wrap:wrap;justify-content:center}
+.dlt{display:inline-flex;align-items:center;gap:4px;padding:5px 10px;border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;background:rgba(52,211,153,.08);color:#c8ccd4}
+.dlt-l{font-family:'Inter',sans-serif;font-weight:600;color:#8b92a5;font-size:10px}
+.dlt-u{color:#34d399}
+.cd{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06);border-radius:18px;padding:20px;margin-bottom:14px;opacity:0;transform:translateY(14px);animation:up .5s ease forwards}
+.cd+.cd{animation-delay:.12s}
+@keyframes up{to{opacity:1;transform:translateY(0)}}
+.ct{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.ctm{display:flex;align-items:center;gap:10px}
+.tdot{width:11px;height:11px;border-radius:3px;flex-shrink:0}
+.tdl{background:#c8102e;box-shadow:0 0 10px rgba(200,16,46,.5)}
+.tdp{background:#006bb6;box-shadow:0 0 10px rgba(0,107,182,.5)}
+.ctm b{font-size:15px;font-weight:700;color:#f0f2f5}
+.ctm em{font-style:normal;font-size:11px;color:#555d73;font-weight:600;margin-left:4px;letter-spacing:.04em;text-transform:uppercase}
+.sl{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:#555d73;background:rgba(255,255,255,.04);padding:4px 10px;border-radius:8px}
+.sb{display:flex;height:8px;border-radius:4px;overflow:hidden;margin-bottom:16px;background:rgba(255,255,255,.03);gap:2px}
+.sb i{display:block;height:100%;border-radius:3px;font-style:normal;transition:width 1s cubic-bezier(.25,.8,.25,1);width:0}
+.sg{background:#34d399}
+.sa{background:#fbbf24}
+.sr{background:#f87171}
+.ss{background:#475569}
+.os{display:flex;flex-direction:column;gap:6px}
+.orow{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:12px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.03)}
+.oc{width:3px;height:30px;border-radius:2px;flex-shrink:0}
+.cg{background:#34d399}
+.ca{background:#fbbf24}
+.cr{background:#f87171}
+.csl{background:#475569}
+.oi{flex:1;min-width:0}
+.ol{font-size:13px;font-weight:700;color:#f0f2f5;line-height:1.3}
+.od{font-size:11px;color:#555d73;margin-top:2px;line-height:1.3;font-weight:500}
+.op{font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:800;letter-spacing:-.04em;text-align:right;flex-shrink:0;min-width:60px}
+.pg{color:#34d399}
+.pa{color:#fbbf24}
+.pr{color:#f87171}
+.ps{color:#64748b}
+.sls{margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,.05)}
+.sls-t{font-size:11px;font-weight:700;color:#555d73;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px}
+.sls-b{display:flex;align-items:flex-end;gap:3px;height:52px}
+.sls-c{display:flex;flex-direction:column;align-items:center;flex:1;gap:3px}
+.sls-bar{width:100%;border-radius:2px 2px 0 0}
+.sls-n{font-family:'JetBrains Mono',monospace;font-size:8px;color:#555d73;font-weight:600}
+.sls-p{font-family:'JetBrains Mono',monospace;font-size:7px;color:#8b92a5;font-weight:600;min-height:10px}
+.prsp{margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,.05)}
+.prsp-t{font-size:11px;font-weight:700;color:#555d73;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px}
+.prsp-r{margin-bottom:10px}
+.prsp-r:last-child{margin-bottom:0}
+.prsp-l{font-size:11px;font-weight:600;color:#8b92a5;margin-bottom:6px}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chip{display:inline-block;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600}
+.chg{background:rgba(52,211,153,.08);color:#34d399;border:1px solid rgba(52,211,153,.15)}
+.cha{background:rgba(251,191,36,.08);color:#fbbf24;border:1px solid rgba(251,191,36,.15)}
+.chs{background:rgba(255,255,255,.03);color:#8b92a5;border:1px solid rgba(255,255,255,.06)}
+details.src{margin-top:8px;margin-bottom:28px;border:1px solid rgba(255,255,255,.05);border-radius:12px;background:rgba(255,255,255,.02)}
+details.src summary{padding:14px 16px;font-size:12px;font-weight:700;color:#555d73;cursor:pointer;list-style:none;display:flex;align-items:center;gap:6px;-webkit-tap-highlight-color:transparent}
+details.src summary::-webkit-details-marker{display:none}
+.src-body{padding:0 16px 14px;font-size:11px;color:#555d73;line-height:1.6}
+.src-body p{margin-bottom:6px}
+.src-body strong{color:#8b92a5}
+.ft{text-align:center;padding:4px 0 36px;font-size:11px;color:#444b5e}
 </style>
-
 </head>
 <body style="background-color:#0a0e1a;color:#f0f2f5">
-
 <div class="glow"></div>
 <div class="wrap">
-
 <div class="hdr">
-  <div class="mark">⚡</div>
+  <div class="mark">&#9889;</div>
   <h1>OKC Pick Tracker</h1>
-  <p class="sub">Market-implied odds · April 2025 Play-In</p>
+  <p class="sub">Market-implied odds &middot; April 2026 Play-In</p>
 </div>
-
 <div class="tog">
-  <button class="on" id="b0" onclick="go('now')">Right Now</button>
-  <button id="b1" onclick="go('if')">If GSW + ORL Win</button>
+  <button class="on" id="b0">Right Now</button>
+  <button id="b1">If GSW + ORL Win</button>
 </div>
-
-<div class="bdg" id="bdg"></div>
-<div class="ks" id="ks"></div>
-<div id="cds"></div>
-<div class="ft" id="ft"></div>
-
+<div id="app"></div>
+<details class="src">
+  <summary>&#9656; Methodology &amp; Sources</summary>
+  <div class="src-body">
+    <p><strong>Play-in odds:</strong> No-vig from sportsbook lines (GSW +152 / LAC -170; ORL +100 / PHI -115).</p>
+    <p><strong>Playoff probability:</strong> Market-implied (LAC No -212; PHI Yes -350).</p>
+    <p><strong>Lottery slots:</strong> NBA fixed tables via Tankathon. LAC #12, PHI #14.</p>
+    <p><strong>Slot mechanics:</strong> Slot #12 can only land at picks 1&ndash;4 or 12&ndash;14. Slot #14 can only land at picks 1&ndash;4 or 14. Picks outside those ranges are structurally impossible.</p>
+    <p><strong>Protections:</strong> LAC unprotected. PHI top-4 protected (2026).</p>
+    <p><strong>Prospects:</strong> Pre-draft consensus from ESPN (Woo), Bleacher Report (Wasserman), The Ringer (Mann). 2026 class.</p>
+    <p><strong>Updated:</strong> April 13, 2026</p>
+  </div>
+</details>
+<div class="ft">Built for Thunder fans who like math.</div>
 </div>
 
 <script>
+/*
+  NBA Lottery mechanics for pick slot distributions:
+  - Slot #12 (10 combinations / 1000): can only land picks 1-4 (lottery jump) or 12-14 (stay/slide).
+    Picks 5-11 are impossible — all 11 teams ahead in slots 1-11 would still pick before slot 12
+    unless they jump into the top 4, and at most 4 can jump.
+  - Slot #14 (5 combinations / 1000): can only land picks 1-4 (lottery jump) or 14.
+    Picks 5-13 are impossible — slot 14 is last, and when 4 teams are drawn for top 4,
+    the remaining 10 fill picks 5-14 in slot order. Slot 14 is always last among remaining.
+  Probabilities below from Tankathon / NBA official lottery tables.
+*/
+
+var lacSlots = [
+  {n:"1", p:1.0, c:"#fbbf24"},
+  {n:"2", p:1.1, c:"#fbbf24"},
+  {n:"3", p:1.2, c:"#fbbf24"},
+  {n:"4", p:1.4, c:"#fbbf24"},
+  {n:"5", p:0, c:"#1e293b"},
+  {n:"6", p:0, c:"#1e293b"},
+  {n:"7", p:0, c:"#1e293b"},
+  {n:"8", p:0, c:"#1e293b"},
+  {n:"9", p:0, c:"#1e293b"},
+  {n:"10", p:0, c:"#1e293b"},
+  {n:"11", p:0, c:"#1e293b"},
+  {n:"12", p:71.7, c:"#34d399"},
+  {n:"13", p:17.7, c:"#34d399"},
+  {n:"14", p:5.9, c:"#34d399"}
+];
+
+var phiSlots = [
+  {n:"1", p:0.5, c:"#f87171"},
+  {n:"2", p:0.5, c:"#f87171"},
+  {n:"3", p:0.6, c:"#f87171"},
+  {n:"4", p:0.7, c:"#f87171"},
+  {n:"5", p:0, c:"#1e293b"},
+  {n:"6", p:0, c:"#1e293b"},
+  {n:"7", p:0, c:"#1e293b"},
+  {n:"8", p:0, c:"#1e293b"},
+  {n:"9", p:0, c:"#1e293b"},
+  {n:"10", p:0, c:"#1e293b"},
+  {n:"11", p:0, c:"#1e293b"},
+  {n:"12", p:0, c:"#1e293b"},
+  {n:"13", p:0, c:"#1e293b"},
+  {n:"14", p:97.7, c:"#34d399"}
+];
+
+var lacPr = [
+  {lbl:"If pick lands 12\u201314 (95.3%)", chips:[
+    {name:"Koa Peat", c:"chg"},
+    {name:"Cameron Carr", c:"chg"},
+    {name:"Nate Ament", c:"chg"}
+  ]},
+  {lbl:"If top-4 jump (4.7%)", chips:[
+    {name:"AJ Dybantsa", c:"cha"},
+    {name:"Darryn Peterson", c:"cha"},
+    {name:"Cameron Boozer", c:"cha"}
+  ]}
+];
+
+var phiPr = [
+  {lbl:"If pick conveys at 14 (97.7%)", chips:[
+    {name:"Nate Ament", c:"chg"},
+    {name:"Jayden Quaintance", c:"chg"},
+    {name:"Karim Lopez", c:"chg"}
+  ]},
+  {lbl:"Top 4 \u2192 Philly keeps (2.3%)", chips:[
+    {name:"Pick stays in Philly", c:"chs"}
+  ]}
+];
+
+var lacPrIf = [
+  {lbl:"If pick lands 12\u201314 (95.3%)", chips:[
+    {name:"Koa Peat", c:"chg"},
+    {name:"Cameron Carr", c:"chg"},
+    {name:"Nate Ament", c:"chg"}
+  ]},
+  {lbl:"If top-4 jump (4.7%)", chips:[
+    {name:"AJ Dybantsa", c:"cha"},
+    {name:"Darryn Peterson", c:"cha"},
+    {name:"Cameron Boozer", c:"cha"}
+  ]}
+];
+
+var phiPrIf = [
+  {lbl:"If pick conveys at 14 (97.7%)", chips:[
+    {name:"Nate Ament", c:"chg"},
+    {name:"Jayden Quaintance", c:"chg"},
+    {name:"Karim Lopez", c:"chg"}
+  ]},
+  {lbl:"Top 4 \u2192 Philly keeps (2.3%)", chips:[
+    {name:"Pick stays in Philly", c:"chs"}
+  ]}
+];
+
 var D = {
   now: {
-    bdg: '<span class="bdg-d">Unconditional · All Outcomes</span>',
-    keys: [
-      { v:"68%", l:"LAC PICK<br>BECOMES LOTTERY", c:"#34d399" },
-      { v:"25%", l:"PHI PICK<br>CONVEYS TO OKC", c:"#34d399" },
-      { v:"4.8%", l:"LAC PICK<br>LANDS TOP 4", c:"#fbbf24" }
+    sum: "<strong>Most likely:</strong> Clippers miss the playoffs and OKC gets a " +
+         "back-end lottery pick from LAC. The 76ers pick is unlikely to convey " +
+         "\u2014 Philly is heavily favored to make the playoffs." +
+         "<div class='dim'>Tonight\u2019s play-in games could change everything.</div>",
+    rg: [
+      {icon:"\uD83C\uDFC0", game:"Warriors vs Clippers", best:"GSW",
+       why:"Eliminates LAC \u2192 guaranteed lottery asset"},
+      {icon:"\uD83C\uDFC0", game:"Magic vs 76ers", best:"ORL",
+       why:"Forces Philly into must-win \u2192 ~53% miss playoffs"}
     ],
-    ft: "Derived from no-vig play-in lines & Tankathon lottery slots.<br>LAC pick unprotected. PHI pick top-4 protected (2026).",
+    keys: [
+      {v:"68%", l:"LAC PICK<br>BECOMES LOTTERY", c:"#34d399"},
+      {v:"25%", l:"PHI PICK<br>CONVEYS TO OKC", c:"#34d399"},
+      {v:"4.7%", l:"LAC PICK<br>LANDS TOP 4", c:"#fbbf24"}
+    ],
+    deltas: null,
     cards: [
-      { tm:"Clippers", cd:"LAC", dc:"td-l", sl:"Slot #12",
-        sg:[{p:4.8,c:"sa"},{p:63.2,c:"sg"},{p:32,c:"ss"}],
+      {
+        tm:"Clippers", cd:"LAC", dc:"tdl",
+        sl:"Lottery Slot #12",
+        sg:[{p:4.7,c:"sa"}, {p:63.3,c:"sg"}, {p:32,c:"ss"}],
         rw:[
-          {lb:"Lottery → OKC",ds:"Clippers miss playoffs, pick 5–14",pc:"63.2%",oc:"cg",xc:"pg"},
-          {lb:"Playoff Pick",ds:"Clippers make playoffs",pc:"32.0%",oc:"cs",xc:"ps"},
-          {lb:"Top 4 Lottery",ds:"1.0% chance at No. 1 overall",pc:"4.8%",oc:"ca",xc:"pa"}
-        ]},
-      { tm:"76ers", cd:"PHI", dc:"td-p", sl:"Slot #14",
-        sg:[{p:25.2,c:"sg"},{p:0.6,c:"sr"},{p:74.2,c:"ss"}],
+          {lb:"Lottery \u2192 OKC",
+           ds:"Clippers miss playoffs, pick 5\u201314",
+           pc:"63.3%", oc:"cg", xc:"pg"},
+          {lb:"Playoff Pick",
+           ds:"Clippers make playoffs",
+           pc:"32.0%", oc:"csl", xc:"ps"},
+          {lb:"Top 4 Lottery",
+           ds:"Includes 1.0% chance at No. 1",
+           pc:"4.7%", oc:"ca", xc:"pa"}
+        ],
+        slots: lacSlots,
+        prospects: lacPr
+      },
+      {
+        tm:"76ers", cd:"PHI", dc:"tdp",
+        sl:"Lottery Slot #14",
+        sg:[{p:24.4,c:"sg"}, {p:0.6,c:"sr"}, {p:75.0,c:"ss"}],
         rw:[
-          {lb:"Lottery → OKC",ds:"Philly misses, pick lands 5–14",pc:"25.2%",oc:"cg",xc:"pg"},
-          {lb:"Playoff Pick",ds:"76ers make playoffs",pc:"74.2%",oc:"cs",xc:"ps"},
-          {lb:"Philly Keeps",ds:"Misses but jumps to top 4",pc:"0.6%",oc:"cr",xc:"pr"}
-        ]}
+          {lb:"Lottery \u2192 OKC",
+           ds:"Philly misses, pick lands at 14",
+           pc:"24.4%", oc:"cg", xc:"pg"},
+          {lb:"Playoff Pick",
+           ds:"76ers make playoffs",
+           pc:"75.0%", oc:"csl", xc:"ps"},
+          {lb:"Philly Keeps",
+           ds:"Misses but jumps to top 4",
+           pc:"0.6%", oc:"cr", xc:"pr"}
+        ],
+        slots: phiSlots,
+        prospects: phiPr
+      }
     ]
   },
   "if": {
-    bdg: '<span class="bdg-s">Scenario · 18.7% Combo Probability</span>',
-    keys: [
-      { v:"100%", l:"LAC PICK<br>BECOMES LOTTERY", c:"#34d399" },
-      { v:"52%", l:"PHI PICK<br>CONVEYS TO OKC", c:"#34d399" },
-      { v:"7.1%", l:"LAC PICK<br>LANDS TOP 4", c:"#fbbf24" }
+    sum: "<strong>This scenario is huge for OKC.</strong> The Clippers are " +
+         "eliminated and their pick is guaranteed to land in the lottery. " +
+         "Philly is pushed to a must-win final play-in \u2014 roughly a " +
+         "coin flip to miss the playoffs." +
+         "<div class='dim'>Two live lottery assets is the Thunder\u2019s dream board.</div>",
+    rg: [
+      {icon:"\u2705", game:"Warriors beat Clippers", best:"Done",
+       why:"LAC eliminated \u2014 locked into lottery at slot #12"},
+      {icon:"\uD83C\uDFC0", game:"76ers vs TBD (final play-in)", best:"Opponent",
+       why:"One more Philly loss \u2192 pick conveys to OKC"}
     ],
-    ft: "<strong>Scenario:</strong> Warriors beat Clippers (9v10) + Magic beat 76ers (7v8).<br>Combo: 38.7% × 48.3% = 18.7%. Philly still has one play-in game left.",
+    keys: [
+      {v:"100%", l:"LAC PICK<br>BECOMES LOTTERY", c:"#34d399"},
+      {v:"52%", l:"PHI PICK<br>CONVEYS TO OKC", c:"#34d399"},
+      {v:"4.7%", l:"LAC PICK<br>LANDS TOP 4", c:"#fbbf24"}
+    ],
+    deltas: [
+      {lbl:"LAC lottery", from:"68%", to:"100%", delta:"+32%"},
+      {lbl:"PHI convey", from:"25%", to:"52%", delta:"+27%"},
+      {lbl:"LAC top 4", from:"4.7%", to:"4.7%", delta:"+0%"}
+    ],
     cards: [
-      { tm:"Clippers", cd:"LAC", dc:"td-l", sl:"Eliminated",
-        sg:[{p:7.1,c:"sa"},{p:92.9,c:"sg"}],
+      {
+        tm:"Clippers", cd:"LAC", dc:"tdl",
+        sl:"Eliminated \u00b7 Slot #12",
+        sg:[{p:4.7,c:"sa"}, {p:95.3,c:"sg"}],
         rw:[
-          {lb:"Lottery → OKC",ds:"Clippers eliminated, pick 5–14",pc:"92.9%",oc:"cg",xc:"pg"},
-          {lb:"Top 4 Lottery",ds:"1.5% chance at No. 1 overall",pc:"7.1%",oc:"ca",xc:"pa"}
-        ]},
-      { tm:"76ers", cd:"PHI", dc:"td-p", sl:"Must-Win Game",
-        sg:[{p:52.2,c:"sg"},{p:1.3,c:"sr"},{p:46.5,c:"ss"}],
+          {lb:"Lottery \u2192 OKC",
+           ds:"Clippers eliminated, pick 12\u201314",
+           pc:"95.3%", oc:"cg", xc:"pg"},
+          {lb:"Top 4 Lottery",
+           ds:"Includes 1.0% chance at No. 1",
+           pc:"4.7%", oc:"ca", xc:"pa"}
+        ],
+        slots: lacSlots,
+        prospects: lacPrIf
+      },
+      {
+        tm:"76ers", cd:"PHI", dc:"tdp",
+        sl:"Must-Win \u00b7 Slot #14",
+        sg:[{p:50.8,c:"sg"}, {p:1.2,c:"sr"}, {p:48.0,c:"ss"}],
         rw:[
-          {lb:"Lottery → OKC",ds:"Philly loses again, pick lands 5–14",pc:"52.2%",oc:"cg",xc:"pg"},
-          {lb:"Playoff Pick",ds:"Philly wins final play-in",pc:"46.5%",oc:"cs",xc:"ps"},
-          {lb:"Philly Keeps",ds:"Misses but jumps to top 4",pc:"1.3%",oc:"cr",xc:"pr"}
-        ]}
+          {lb:"Lottery \u2192 OKC",
+           ds:"Philly loses final play-in, pick at 14",
+           pc:"50.8%", oc:"cg", xc:"pg"},
+          {lb:"Playoff Pick",
+           ds:"Philly wins final play-in",
+           pc:"48.0%", oc:"csl", xc:"ps"},
+          {lb:"Philly Keeps",
+           ds:"Misses but jumps to top 4",
+           pc:"1.2%", oc:"cr", xc:"pr"}
+        ],
+        slots: phiSlots,
+        prospects: phiPrIf
+      }
     ]
   }
 };
 
 var cur = "now";
 
+document.getElementById("b0").addEventListener("click", function() {
+  go("now");
+});
+
+document.getElementById("b1").addEventListener("click", function() {
+  go("if");
+});
+
 function go(k) {
   cur = k;
-  document.getElementById("b0").className = k==="now"?"on":"";
-  document.getElementById("b1").className = k==="if"?"on":"";
+  document.getElementById("b0").className = k === "now" ? "on" : "";
+  document.getElementById("b1").className = k === "if" ? "on" : "";
   render();
 }
 
 function render() {
   var d = D[cur];
-  document.getElementById("bdg").innerHTML = d.bdg;
-  document.getElementById("ft").innerHTML = d.ft;
+  var h = "";
 
-  var kh = "";
-  for (var i=0; i<d.keys.length; i++) {
+  h += '<div class="sum">' + d.sum + '</div>';
+
+  h += '<div class="rg">';
+  for (var i = 0; i < d.rg.length; i++) {
+    var r = d.rg[i];
+    h += '<div class="ri">';
+    h += '<div class="ri-i">' + r.icon + '</div>';
+    h += '<div class="ri-f">';
+    h += '<div class="ri-g">' + r.game + '</div>';
+    h += '<div class="ri-w">' + r.why + '</div>';
+    h += '</div>';
+    h += '<span class="ri-t">Root ' + r.best + '</span>';
+    h += '</div>';
+  }
+  h += '</div>';
+
+  h += '<div class="ks">';
+  for (var i = 0; i < d.keys.length; i++) {
     var k = d.keys[i];
-    kh += '<div class="kn"><span class="v" style="color:'+k.c+'">'+k.v+'</span><span class="l">'+k.l+'</span></div>';
+    h += '<div class="kn">';
+    h += '<span class="v" style="color:' + k.c + '">' + k.v + '</span>';
+    h += '<span class="l">' + k.l + '</span>';
+    h += '</div>';
   }
-  document.getElementById("ks").innerHTML = kh;
+  h += '</div>';
 
-  var ch = "";
-  for (var i=0; i<d.cards.length; i++) {
+  if (d.deltas) {
+    h += '<div class="deltas">';
+    for (var i = 0; i < d.deltas.length; i++) {
+      var dl = d.deltas[i];
+      h += '<div class="dlt">';
+      h += '<span class="dlt-l">' + dl.lbl + '</span> ';
+      h += dl.from + ' \u2192 ' + dl.to + ' ';
+      h += '<span class="dlt-u">' + dl.delta + '</span>';
+      h += '</div>';
+    }
+    h += '</div>';
+  }
+
+  for (var i = 0; i < d.cards.length; i++) {
     var c = d.cards[i];
-    var sh = "";
-    for (var j=0; j<c.sg.length; j++) {
-      sh += '<i class="'+c.sg[j].c+'" data-w="'+c.sg[j].p+'"></i>';
-    }
-    var rh = "";
-    for (var j=0; j<c.rw.length; j++) {
-      var r = c.rw[j];
-      rh += '<div class="or"><div class="oc '+r.oc+'"></div><div class="oi"><div class="ol">'+r.lb+'</div><div class="od">'+r.ds+'</div></div><div class="op '+r.xc+'">'+r.pc+'</div></div>';
-    }
-    ch += '<div class="cd"><div class="ct"><div class="ctm"><div class="td '+c.dc+'"></div><b>'+c.tm+'</b><em>'+c.cd+'</em></div><div class="sl">'+c.sl+'</div></div><div class="sb">'+sh+'</div><div class="os">'+rh+'</div></div>';
-  }
-  document.getElementById("cds").innerHTML = ch;
+    h += '<div class="cd">';
 
-  requestAnimationFrame(function(){requestAnimationFrame(function(){
-    var els = document.querySelectorAll(".sb i");
-    for (var i=0; i<els.length; i++) {
-      els[i].style.width = els[i].getAttribute("data-w")+"%";
+    h += '<div class="ct">';
+    h += '<div class="ctm">';
+    h += '<div class="tdot ' + c.dc + '"></div>';
+    h += '<b>' + c.tm + '</b>';
+    h += '<em>' + c.cd + '</em>';
+    h += '</div>';
+    h += '<div class="sl">' + c.sl + '</div>';
+    h += '</div>';
+
+    h += '<div class="sb">';
+    for (var j = 0; j < c.sg.length; j++) {
+      h += '<i class="' + c.sg[j].c + '" data-w="' + c.sg[j].p + '"></i>';
     }
-  })});
+    h += '</div>';
+
+    h += '<div class="os">';
+    for (var j = 0; j < c.rw.length; j++) {
+      var rr = c.rw[j];
+      h += '<div class="orow">';
+      h += '<div class="oc ' + rr.oc + '"></div>';
+      h += '<div class="oi">';
+      h += '<div class="ol">' + rr.lb + '</div>';
+      h += '<div class="od">' + rr.ds + '</div>';
+      h += '</div>';
+      h += '<div class="op ' + rr.xc + '">' + rr.pc + '</div>';
+      h += '</div>';
+    }
+    h += '</div>';
+
+    var maxP = 0;
+    for (var j = 0; j < c.slots.length; j++) {
+      if (c.slots[j].p > maxP) maxP = c.slots[j].p;
+    }
+    h += '<div class="sls">';
+    h += '<div class="sls-t">Pick slot distribution (if lottery)</div>';
+    h += '<div class="sls-b">';
+    for (var j = 0; j < c.slots.length; j++) {
+      var s = c.slots[j];
+      var bH = s.p === 0 ? 0 : Math.max(2, Math.round((s.p / maxP) * 40));
+      h += '<div class="sls-c">';
+      h += '<div class="sls-p">';
+      if (s.p === 0) {
+        h += '<span style="color:#333a4a;font-size:6px">\u2014</span>';
+      } else if (s.p >= 5) {
+        h += Math.round(s.p) + '%';
+      }
+      h += '</div>';
+      h += '<div class="sls-bar" style="height:' + bH + 'px;';
+      h += 'background:' + (s.p === 0 ? 'rgba(255,255,255,.03)' : s.c) + '"></div>';
+      h += '<div class="sls-n" style="' + (s.p === 0 ? 'color:#2a3040' : '') + '">' + s.n + '</div>';
+      h += '</div>';
+    }
+    h += '</div></div>';
+
+    h += '<div class="prsp">';
+    h += '<div class="prsp-t">Prospects at this range</div>';
+    for (var j = 0; j < c.prospects.length; j++) {
+      var pr = c.prospects[j];
+      h += '<div class="prsp-r">';
+      h += '<div class="prsp-l">' + pr.lbl + '</div>';
+      h += '<div class="chips">';
+      for (var m = 0; m < pr.chips.length; m++) {
+        var ch = pr.chips[m];
+        h += '<span class="chip ' + ch.c + '">' + ch.name + '</span>';
+      }
+      h += '</div></div>';
+    }
+    h += '</div>';
+
+    h += '</div>';
+  }
+
+  document.getElementById("app").innerHTML = h;
+
+  requestAnimationFrame(function() {
+    requestAnimationFrame(function() {
+      var segs = document.querySelectorAll(".sb i");
+      for (var x = 0; x < segs.length; x++) {
+        segs[x].style.width = segs[x].getAttribute("data-w") + "%";
+      }
+    });
+  });
 }
 
 render();
