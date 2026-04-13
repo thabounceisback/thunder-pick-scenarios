@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0f1117">
+<meta name="description" content="Market-implied probabilities for OKC's Clippers and 76ers draft picks">
+<title>OKC Pick Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+–bg: #0f1117;
+–card: rgba(255,255,255,0.04);
+–card-border: rgba(255,255,255,0.08);
+–text: #ffffff;
+–text-dim: #c8ccd4;
+–text-muted: #6b7280;
+–green: #10b981;
+–amber: #f59e0b;
+–red: #ef4444;
+–gray: #6b7280;
+–indigo: #818cf8;
+–bar-bg: rgba(255,255,255,0.06);
+–font-body: ‘DM Sans’, -apple-system, BlinkMacSystemFont, sans-serif;
+–font-mono: ‘JetBrains Mono’, ‘SF Mono’, monospace;
+}
+
+html, body {
+background: var(–bg);
+color: var(–text);
+font-family: var(–font-body);
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+min-height: 100dvh;
+overflow-x: hidden;
+}
+
+body {
+padding: env(safe-area-inset-top) 16px env(safe-area-inset-bottom);
+max-width: 480px;
+margin: 0 auto;
+}
+
+.header {
+text-align: center;
+padding: 28px 0 20px;
+}
+.header-row {
+display: inline-flex;
+align-items: center;
+gap: 8px;
+margin-bottom: 6px;
+}
+.header h1 {
+font-family: var(–font-mono);
+font-size: 18px;
+font-weight: 800;
+letter-spacing: -0.03em;
+text-transform: uppercase;
+}
+.header p {
+font-size: 12px;
+color: var(–text-muted);
+letter-spacing: 0.02em;
+}
+
+/* Toggle */
+.toggle-wrap {
+display: flex;
+background: var(–card);
+border-radius: 10px;
+padding: 3px;
+margin-bottom: 16px;
+border: 1px solid var(–card-border);
+}
+.toggle-btn {
+flex: 1;
+padding: 11px 8px;
+border-radius: 8px;
+border: none;
+cursor: pointer;
+font-family: var(–font-body);
+font-size: 13px;
+font-weight: 500;
+color: var(–text-muted);
+background: transparent;
+transition: all 0.25s ease;
+-webkit-tap-highlight-color: transparent;
+}
+.toggle-btn.active {
+font-weight: 700;
+color: var(–text);
+background: rgba(255,255,255,0.08);
+}
+
+/* Subtitle pill */
+.pill-wrap { text-align: center; margin-bottom: 18px; }
+.pill {
+display: inline-block;
+padding: 5px 14px;
+border-radius: 20px;
+font-size: 12px;
+font-weight: 600;
+letter-spacing: 0.01em;
+transition: all 0.3s ease;
+}
+.pill.indigo { background: rgba(99,102,241,0.12); color: var(–indigo); }
+.pill.amber  { background: rgba(245,158,11,0.12); color: var(–amber); }
+
+/* Cards */
+.card {
+background: var(–card);
+border: 1px solid var(–card-border);
+border-radius: 14px;
+padding: 18px 16px;
+margin-bottom: 12px;
+animation: fadeUp 0.4s ease both;
+}
+.card:nth-child(2) { animation-delay: 0.08s; }
+
+@keyframes fadeUp {
+from { opacity: 0; transform: translateY(10px); }
+to   { opacity: 1; transform: translateY(0); }
+}
+
+.card-header {
+display: flex;
+align-items: center;
+gap: 10px;
+margin-bottom: 16px;
+}
+.team-badge {
+width: 32px;
+height: 32px;
+border-radius: 8px;
+display: flex;
+align-items: center;
+justify-content: center;
+font-family: var(–font-mono);
+font-size: 11px;
+font-weight: 800;
+color: #fff;
+letter-spacing: -0.02em;
+flex-shrink: 0;
+}
+.badge-lac { background: #c8102e; }
+.badge-phi { background: #006bb6; }
+.card-title {
+font-size: 16px;
+font-weight: 700;
+letter-spacing: -0.01em;
+}
+
+/* Bar rows */
+.bar-row { margin-bottom: 12px; }
+.bar-row:last-child { margin-bottom: 0; }
+.bar-label {
+display: flex;
+justify-content: space-between;
+align-items: baseline;
+margin-bottom: 4px;
+}
+.bar-label-text {
+font-size: 13px;
+color: var(–text-dim);
+letter-spacing: 0.01em;
+}
+.bar-label-pct {
+font-family: var(–font-mono);
+font-size: 14px;
+font-weight: 700;
+color: #fff;
+white-space: nowrap;
+margin-left: 8px;
+}
+.bar-track {
+width: 100%;
+height: 6px;
+border-radius: 3px;
+background: var(–bar-bg);
+overflow: hidden;
+}
+.bar-fill {
+height: 100%;
+border-radius: 3px;
+width: 0;
+transition: width 0.8s cubic-bezier(.4,0,.2,1);
+}
+.fill-green { background: var(–green); }
+.fill-amber { background: var(–amber); }
+.fill-red   { background: var(–red); }
+.fill-gray  { background: var(–gray); }
+
+/* Legend */
+.legend {
+display: flex;
+flex-wrap: wrap;
+gap: 8px 18px;
+justify-content: center;
+margin-top: 18px;
+padding: 12px 0 24px;
+}
+.legend-item {
+display: flex;
+align-items: center;
+gap: 5px;
+}
+.legend-dot {
+width: 8px;
+height: 8px;
+border-radius: 2px;
+flex-shrink: 0;
+}
+.legend-text {
+font-size: 11px;
+color: var(–text-muted);
+}
+
+/* Scenario combo pill at bottom */
+.combo-note {
+text-align: center;
+padding: 10px 16px 28px;
+font-size: 11px;
+color: var(–text-muted);
+line-height: 1.5;
+}
+.combo-note strong {
+color: var(–text-dim);
+font-weight: 600;
+}
+</style>
+
+</head>
+<body>
+
+<div class="header">
+  <div class="header-row">
+    <span style="font-size:20px">⚡</span>
+    <h1>OKC Pick Tracker</h1>
+  </div>
+  <p>Market-implied probabilities · April 2025</p>
+</div>
+
+<div class="toggle-wrap">
+  <button class="toggle-btn active" id="btn-now" onclick="show('now')">From Right Now</button>
+  <button class="toggle-btn" id="btn-if" onclick="show('if')">If GSW + ORL Win</button>
+</div>
+
+<div class="pill-wrap">
+  <span class="pill indigo" id="pill">Unconditional market odds</span>
+</div>
+
+<div id="cards"></div>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div><span class="legend-text">Conveys to OKC</span></div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--amber)"></div><span class="legend-text">Top 4 lottery</span></div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--red)"></div><span class="legend-text">Protected / kept</span></div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--gray)"></div><span class="legend-text">Playoff pick</span></div>
+</div>
+
+<div class="combo-note" id="combo-note"></div>
+
+<script>
+const scenarios = {
+  now: {
+    pill: "Unconditional market odds",
+    pillClass: "indigo",
+    note: "",
+    clippers: [
+      { label: "Top 4 Lottery", pct: 4.8, fill: "fill-amber" },
+      { label: "Lottery (5–14) → OKC", pct: 63.2, fill: "fill-green" },
+      { label: "Playoff-Range Pick", pct: 32.0, fill: "fill-gray" },
+    ],
+    sixers: [
+      { label: "Lottery → Conveys to OKC", pct: 25.2, fill: "fill-green" },
+      { label: "Philly Keeps (Top-4 Jump)", pct: 0.6, fill: "fill-red" },
+      { label: "Playoff-Range Pick", pct: 74.2, fill: "fill-gray" },
+    ],
+  },
+  if: {
+    pill: "18.7% chance this scenario hits",
+    pillClass: "amber",
+    note: "<strong>Scenario:</strong> Warriors beat Clippers in 9-vs-10 play-in, Magic beat 76ers in 7-vs-8 play-in. Combo probability ≈ 38.7% × 48.3% = 18.7%.",
+    clippers: [
+      { label: "Top 4 Lottery", pct: 7.1, fill: "fill-amber" },
+      { label: "Lottery (5–14) → OKC", pct: 92.9, fill: "fill-green" },
+    ],
+    sixers: [
+      { label: "Lottery → Conveys to OKC", pct: 52.2, fill: "fill-green" },
+      { label: "Philly Keeps (Top-4 Jump)", pct: 1.3, fill: "fill-red" },
+      { label: "Playoff-Range Pick", pct: 46.5, fill: "fill-gray" },
+    ],
+  },
+};
+
+let current = "now";
+
+function makeBarRow(item) {
+  return `
+    <div class="bar-row">
+      <div class="bar-label">
+        <span class="bar-label-text">${item.label}</span>
+        <span class="bar-label-pct">${item.pct.toFixed(1)}%</span>
+      </div>
+      <div class="bar-track">
+        <div class="bar-fill ${item.fill}" data-pct="${item.pct}"></div>
+      </div>
+    </div>`;
+}
+
+function makeCard(team, badge, badgeClass, rows) {
+  return `
+    <div class="card">
+      <div class="card-header">
+        <div class="team-badge ${badgeClass}">${badge}</div>
+        <span class="card-title">${team} Pick</span>
+      </div>
+      ${rows.map(makeBarRow).join("")}
+    </div>`;
+}
+
+function render() {
+  const s = scenarios[current];
+  const html =
+    makeCard("Clippers", "LAC", "badge-lac", s.clippers) +
+    makeCard("76ers", "PHI", "badge-phi", s.sixers);
+  document.getElementById("cards").innerHTML = html;
+
+  const pill = document.getElementById("pill");
+  pill.textContent = s.pill;
+  pill.className = "pill " + s.pillClass;
+
+  document.getElementById("combo-note").innerHTML = s.note;
+
+  // animate bars after paint
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      document.querySelectorAll(".bar-fill").forEach((el) => {
+        el.style.width = el.dataset.pct + "%";
+      });
+    });
+  });
+}
+
+function show(key) {
+  current = key;
+  document.getElementById("btn-now").classList.toggle("active", key === "now");
+  document.getElementById("btn-if").classList.toggle("active", key === "if");
+  render();
+}
+
+render();
+</script>
+
+</body>
+</html>
