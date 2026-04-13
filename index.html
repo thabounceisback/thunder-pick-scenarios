@@ -61,6 +61,7 @@ body{font-family:'Inter',-apple-system,sans-serif;-webkit-font-smoothing:antiali
 .tdot{width:11px;height:11px;border-radius:3px;flex-shrink:0}
 .tdl{background:#c8102e;box-shadow:0 0 10px rgba(200,16,46,.5)}
 .tdp{background:#006bb6;box-shadow:0 0 10px rgba(0,107,182,.5)}
+.tdj{background:#f9a01b;box-shadow:0 0 10px rgba(249,160,27,.5)}
 .ctm b{font-size:15px;font-weight:700;color:#f0f2f5}
 .ctm em{font-style:normal;font-size:11px;color:#555d73;font-weight:600;margin-left:4px;letter-spacing:.04em;text-transform:uppercase}
 .sl{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:#555d73;background:rgba(255,255,255,.04);padding:4px 10px;border-radius:8px}
@@ -139,7 +140,7 @@ details.src summary::-webkit-details-marker{display:none}
     <p><strong>Lottery mechanics</strong></p>
     <p>NBA fixed tables via Tankathon. Slot #12 can only land picks 1&ndash;4 or 12&ndash;14. Slot #14 can only land picks 1&ndash;4 or 14. All other slots are structurally impossible.</p>
     <p><strong>Protections</strong></p>
-    <p>LAC pick: unprotected. PHI pick: top-4 protected (2026).</p>
+    <p>LAC pick: unprotected. PHI pick: top-4 protected (2026). UTA pick: top-8 protected (2026, extinguishes if not conveyed).</p>
     <p><strong>Prospect methodology</strong></p>
     <p>Names drawn from consensus mocks (ESPN/Woo, B/R/Wasserman, The Ringer/Mann). They illustrate who is commonly projected in each range &mdash; not a predicted OKC draft board.</p>
     <p><strong>Last updated</strong></p>
@@ -215,6 +216,31 @@ var teams = {
         {name:"Pick stays in Philly", c:"chs"}
       ]}
     ]
+  },
+  UTA: {
+    name: "Jazz", code: "UTA", dotClass: "tdj",
+    /*
+      Slot 4 or 5 (coin flip pending with SAC).
+      Slot 4: worst case pick 8 → guaranteed top-8 → 0% conveyance.
+      Slot 5: can fall to pick 9 if none of slots 1-4 are drawn → ~0.6%.
+      Blended (pre-coin-flip): ~0.3%.
+      Only possible conveyance pick: 9.
+    */
+    slots: [
+      {n:"1\u20138", p:99.7, note:"Jazz keep"},
+      null,
+      {n:"9", p:0.3}
+    ],
+    possibleRange: "9 (only if slot 5 and no top-4 teams drawn)",
+    prospects: [
+      {lbl:"If pick conveys at 9 (0.3%)", chips:[
+        {name:"Brayden Burries", c:"chg"},
+        {name:"Labaron Philon", c:"chg"}
+      ]},
+      {lbl:"Jazz keep (99.7%)", chips:[
+        {name:"Obligation extinguishes", c:"chs"}
+      ]}
+    ]
   }
 };
 
@@ -242,9 +268,9 @@ var scenarios = {
     ],
     bwl: {
       likely: "OKC gets LAC lottery pick only (back-end, 12\u201314)",
-      best:   "Both LAC and PHI picks convey \u2014 two lottery assets",
-      chaos:  "LAC pick jumps into top 4 (4.7%)",
-      worst:  "Both teams make playoffs \u2014 OKC gets nothing usable"
+      best:   "All three picks convey \u2014 LAC, PHI, and Jazz",
+      chaos:  "LAC top-4 jump (4.7%) or Jazz fall to 9 (0.3%)",
+      worst:  "Both teams make playoffs \u2014 OKC gets late 1sts (~15\u201320 range)"
     },
     cards: [
       {
@@ -272,6 +298,17 @@ var scenarios = {
           {lb:"Top-4 protection hit", ds:"Misses but jumps to top 4 \u2192 Philly keeps",
            pc:0.6, oc:"cr", xc:"pr"}
         ]
+      },
+      {
+        team: "UTA", slotLabel: "Slot #4 or #5 \u00b7 Coin Flip TBD",
+        segments: [{p:0.3,c:"sg"}, {p:99.7,c:"ss"}],
+        expected: "Near-zero chance. If Jazz win coin flip (slot 4), conveyance is <strong>impossible</strong>. Slot 5: ~0.6% of falling to pick 9.",
+        outcomes: [
+          {lb:"Conveys to OKC",      ds:"Jazz fall to pick 9 (slot 5 only)",
+           pc:0.3, oc:"cg", xc:"pg"},
+          {lb:"Jazz keep",           ds:"Top-8 protection holds \u2192 obligation extinguishes",
+           pc:99.7, oc:"csl", xc:"ps"}
+        ]
       }
     ]
   },
@@ -296,9 +333,9 @@ var scenarios = {
     ],
     bwl: {
       likely: "OKC locks in LAC lottery asset; PHI is a coin flip",
-      best:   "Both picks convey \u2014 OKC adds two lottery talents",
-      chaos:  "LAC pick jumps into top 4 (4.7%)",
-      worst:  "Philly wins final play-in \u2014 OKC gets LAC pick only"
+      best:   "All three picks convey \u2014 LAC, PHI, and Jazz",
+      chaos:  "LAC top-4 jump (4.7%) or Jazz fall to 9 (0.3%)",
+      worst:  "Philly wins final play-in \u2014 OKC gets LAC lottery pick + PHI in the ~15\u201320 range"
     },
     cards: [
       {
@@ -323,6 +360,17 @@ var scenarios = {
            pc:48.0, oc:"csl", xc:"ps"},
           {lb:"Top-4 protection hit", ds:"Misses but jumps to top 4 \u2192 Philly keeps",
            pc:1.2, oc:"cr", xc:"pr"}
+        ]
+      },
+      {
+        team: "UTA", slotLabel: "Slot #4 or #5 \u00b7 Coin Flip TBD",
+        segments: [{p:0.3,c:"sg"}, {p:99.7,c:"ss"}],
+        expected: "Near-zero chance. If Jazz win coin flip (slot 4), conveyance is <strong>impossible</strong>. Slot 5: ~0.6% of falling to pick 9.",
+        outcomes: [
+          {lb:"Conveys to OKC",      ds:"Jazz fall to pick 9 (slot 5 only)",
+           pc:0.3, oc:"cg", xc:"pg"},
+          {lb:"Jazz keep",           ds:"Top-8 protection holds \u2192 obligation extinguishes",
+           pc:99.7, oc:"csl", xc:"ps"}
         ]
       }
     ]
