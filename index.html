@@ -1,39 +1,30 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" style="background:#0a0e1a;color-scheme:dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#0a0e1a">
 <title>OKC Pick Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
-
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-:root {
-–bg: #0a0e1a;
-–surface: rgba(255,255,255,0.03);
-–surface-hover: rgba(255,255,255,0.06);
-–border: rgba(255,255,255,0.06);
-–text: #f0f2f5;
-–text-secondary: #8b92a5;
-–text-muted: #555d73;
-–okc-blue: #007ac1;
-–okc-orange: #ef6100;
-–green: #34d399;
-–amber: #fbbf24;
-–red: #f87171;
-–slate: #475569;
+html, body {
+background-color: #0a0e1a !important;
+color: #f0f2f5 !important;
+color-scheme: dark;
 }
 
-html { background: var(–bg); }
 body {
 font-family: ‘Inter’, -apple-system, BlinkMacSystemFont, sans-serif;
-color: var(–text);
 -webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
 min-height: 100dvh;
 padding: 0 20px env(safe-area-inset-bottom);
 max-width: 440px;
@@ -41,217 +32,232 @@ margin: 0 auto;
 overflow-x: hidden;
 }
 
+/* Ambient glow */
 .glow {
-position: fixed; top: -120px; left: 50%; transform: translateX(-50%);
-width: 360px; height: 360px;
-background: radial-gradient(circle, rgba(0,122,193,0.12) 0%, rgba(239,97,0,0.06) 40%, transparent 70%);
+position: fixed; top: -140px; left: 50%; transform: translateX(-50%);
+width: 400px; height: 400px;
+background: radial-gradient(circle, rgba(0,122,193,0.15) 0%, rgba(239,97,0,0.07) 45%, transparent 70%);
 pointer-events: none; z-index: 0;
 }
-.content { position: relative; z-index: 1; }
+.wrap { position: relative; z-index: 1; }
 
-.header { padding: 48px 0 28px; text-align: center; }
-.thunder-mark {
+/* ─── Header ─── */
+.hdr { padding: 44px 0 24px; text-align: center; }
+.mark {
 display: inline-flex; align-items: center; justify-content: center;
-width: 44px; height: 44px; border-radius: 12px;
-background: linear-gradient(135deg, var(–okc-blue), var(–okc-orange));
-margin-bottom: 14px; font-size: 22px;
-box-shadow: 0 4px 24px rgba(0,122,193,0.3);
+width: 48px; height: 48px; border-radius: 14px;
+background: linear-gradient(135deg, #007ac1 0%, #ef6100 100%);
+margin-bottom: 14px; font-size: 24px;
+box-shadow: 0 6px 32px rgba(0,122,193,0.35), 0 2px 8px rgba(239,97,0,0.2);
 }
-.header h1 {
+.hdr h1 {
 font-family: ‘JetBrains Mono’, monospace;
-font-size: 15px; font-weight: 800; letter-spacing: 0.12em;
-text-transform: uppercase; margin-bottom: 4px;
+font-size: 16px; font-weight: 800; letter-spacing: 0.14em;
+text-transform: uppercase; color: #f0f2f5; margin-bottom: 5px;
 }
-.header .sub { font-size: 12px; color: var(–text-muted); font-weight: 500; letter-spacing: 0.02em; }
+.hdr .sub {
+font-size: 12px; color: #555d73; font-weight: 500; letter-spacing: 0.02em;
+}
 
-.toggle {
-display: flex; background: var(–surface); border: 1px solid var(–border);
-border-radius: 12px; padding: 3px; margin-bottom: 24px;
+/* ─── Toggle ─── */
+.tog {
+display: flex;
+background: rgba(255,255,255,0.04);
+border: 1px solid rgba(255,255,255,0.07);
+border-radius: 14px; padding: 4px; margin-bottom: 20px;
 }
-.toggle button {
-flex: 1; padding: 12px 6px; border: none; border-radius: 10px; cursor: pointer;
+.tog button {
+flex: 1; padding: 13px 8px; border: none; border-radius: 11px; cursor: pointer;
 font-family: ‘Inter’, sans-serif; font-size: 13px; font-weight: 600;
-color: var(–text-muted); background: transparent; transition: all 0.3s ease;
+color: #555d73; background: transparent;
+transition: all 0.3s cubic-bezier(.4,0,.2,1);
 -webkit-tap-highlight-color: transparent;
 }
-.toggle button.on {
-color: var(–text); background: var(–surface-hover);
-box-shadow: 0 1px 8px rgba(0,0,0,0.2);
+.tog button.on {
+color: #f0f2f5;
+background: rgba(255,255,255,0.08);
+box-shadow: 0 2px 12px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.05);
 }
 
-.scenario-badge { text-align: center; margin-bottom: 22px; min-height: 26px; }
-.scenario-badge span {
-display: inline-block; padding: 5px 14px; border-radius: 100px;
-font-size: 11px; font-weight: 700; letter-spacing: 0.03em; text-transform: uppercase;
+/* ─── Badge ─── */
+.bdg { text-align: center; margin-bottom: 20px; min-height: 28px; }
+.bdg span {
+display: inline-block; padding: 6px 16px; border-radius: 100px;
+font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
 }
-.badge-default { background: rgba(139,146,165,0.1); color: var(–text-secondary); }
-.badge-scenario { background: rgba(251,191,36,0.1); color: var(–amber); }
+.bdg-d { background: rgba(139,146,165,0.08); color: #8b92a5; }
+.bdg-s { background: rgba(251,191,36,0.1); color: #fbbf24; }
 
-.key-strip { display: flex; gap: 8px; margin-bottom: 24px; }
-.key-num {
-flex: 1; text-align: center; padding: 14px 6px; border-radius: 12px;
-border: 1px solid var(–border); background: var(–surface);
+/* ─── Key Stats ─── */
+.ks { display: flex; gap: 8px; margin-bottom: 22px; }
+.kn {
+flex: 1; text-align: center; padding: 16px 4px 14px;
+border-radius: 14px;
+background: rgba(255,255,255,0.03);
+border: 1px solid rgba(255,255,255,0.06);
 }
-.key-num .val {
-font-family: ‘JetBrains Mono’, monospace; font-size: 22px; font-weight: 800;
-letter-spacing: -0.03em; display: block; margin-bottom: 3px;
+.kn .v {
+font-family: ‘JetBrains Mono’, monospace;
+font-size: 24px; font-weight: 800; letter-spacing: -0.04em;
+display: block; margin-bottom: 4px; line-height: 1;
 }
-.key-num .lbl {
-font-size: 10px; font-weight: 600; color: var(–text-muted);
-text-transform: uppercase; letter-spacing: 0.06em; line-height: 1.3;
-}
-
-.card {
-background: var(–surface); border: 1px solid var(–border);
-border-radius: 16px; padding: 20px; margin-bottom: 14px;
-opacity: 0; transform: translateY(12px);
-animation: cardIn 0.5s ease forwards;
-}
-.card:nth-child(2) { animation-delay: 0.1s; }
-@keyframes cardIn { to { opacity: 1; transform: translateY(0); } }
-
-.card-top {
-display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px;
-}
-.card-team { display: flex; align-items: center; gap: 10px; }
-.team-dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
-.dot-lac { background: #c8102e; box-shadow: 0 0 8px rgba(200,16,46,0.4); }
-.dot-phi { background: #006bb6; box-shadow: 0 0 8px rgba(0,107,182,0.4); }
-.card-team span { font-size: 14px; font-weight: 700; letter-spacing: -0.01em; }
-.card-team small {
-font-size: 11px; color: var(–text-muted); font-weight: 600;
-margin-left: 6px; letter-spacing: 0.04em; text-transform: uppercase;
-}
-.card-slot {
-font-family: ‘JetBrains Mono’, monospace; font-size: 11px; font-weight: 700;
-color: var(–text-muted); background: rgba(255,255,255,0.04);
-padding: 3px 8px; border-radius: 6px; letter-spacing: 0.02em;
+.kn .l {
+font-size: 9px; font-weight: 700; color: #555d73;
+text-transform: uppercase; letter-spacing: 0.07em; line-height: 1.35;
 }
 
-.stacked-bar {
-display: flex; height: 10px; border-radius: 5px; overflow: hidden;
-margin-bottom: 20px; background: rgba(255,255,255,0.03); gap: 2px;
+/* ─── Cards ─── */
+.cd {
+background: rgba(255,255,255,0.025);
+border: 1px solid rgba(255,255,255,0.06);
+border-radius: 18px; padding: 20px; margin-bottom: 14px;
+opacity: 0; transform: translateY(14px);
+animation: up 0.5s ease forwards;
 }
-.stacked-bar .seg { height: 100%; border-radius: 3px; transition: width 0.9s cubic-bezier(.4,0,.15,1); width: 0; }
-.seg-green { background: var(–green); }
-.seg-amber { background: var(–amber); }
-.seg-red   { background: var(–red); }
-.seg-slate { background: var(–slate); }
+.cd + .cd { animation-delay: 0.12s; }
+@keyframes up { to { opacity: 1; transform: translateY(0); } }
 
-.outcomes { display: flex; flex-direction: column; gap: 10px; }
-.outcome-row {
-display: flex; align-items: center; gap: 10px;
-padding: 10px 12px; border-radius: 10px;
-background: rgba(255,255,255,0.015); border: 1px solid transparent;
-transition: border-color 0.2s;
+.ct {
+display: flex; align-items: center; justify-content: space-between;
+margin-bottom: 16px;
 }
-.outcome-color { width: 4px; height: 28px; border-radius: 2px; flex-shrink: 0; }
-.oc-green { background: var(–green); }
-.oc-amber { background: var(–amber); }
-.oc-red   { background: var(–red); }
-.oc-slate { background: var(–slate); }
-
-.outcome-info { flex: 1; min-width: 0; }
-.outcome-label { font-size: 13px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.3; }
-.outcome-desc { font-size: 11px; color: var(–text-muted); margin-top: 1px; line-height: 1.3; }
-
-.outcome-pct {
-font-family: ‘JetBrains Mono’, monospace; font-size: 18px; font-weight: 800;
-letter-spacing: -0.03em; text-align: right; flex-shrink: 0; min-width: 60px;
+.ctm { display: flex; align-items: center; gap: 10px; }
+.td {
+width: 11px; height: 11px; border-radius: 3px; flex-shrink: 0;
 }
-.pct-green { color: var(–green); }
-.pct-amber { color: var(–amber); }
-.pct-red   { color: var(–red); }
-.pct-slate { color: var(–slate); }
-
-.footer {
-text-align: center; padding: 22px 0 36px;
-font-size: 11px; color: var(–text-muted); line-height: 1.6;
+.td-l { background: #c8102e; box-shadow: 0 0 10px rgba(200,16,46,0.5); }
+.td-p { background: #006bb6; box-shadow: 0 0 10px rgba(0,107,182,0.5); }
+.ctm b { font-size: 15px; font-weight: 700; color: #f0f2f5; letter-spacing: -0.01em; }
+.ctm em {
+font-style: normal; font-size: 11px; color: #555d73; font-weight: 600;
+margin-left: 4px; letter-spacing: 0.05em; text-transform: uppercase;
 }
-.footer strong { color: var(–text-secondary); font-weight: 600; }
+.sl {
+font-family: ‘JetBrains Mono’, monospace; font-size: 10px; font-weight: 700;
+color: #555d73; background: rgba(255,255,255,0.04);
+padding: 4px 10px; border-radius: 8px; letter-spacing: 0.03em;
+}
+
+/* ─── Stacked bar ─── */
+.sb {
+display: flex; height: 8px; border-radius: 4px; overflow: hidden;
+margin-bottom: 18px; background: rgba(255,255,255,0.03); gap: 2px;
+}
+.sb i {
+display: block; height: 100%; border-radius: 3px; font-style: normal;
+transition: width 1s cubic-bezier(.25,.8,.25,1); width: 0;
+}
+.sg { background: #34d399; }
+.sa { background: #fbbf24; }
+.sr { background: #f87171; }
+.ss { background: #475569; }
+
+/* ─── Rows ─── */
+.os { display: flex; flex-direction: column; gap: 6px; }
+.or {
+display: flex; align-items: center; gap: 12px;
+padding: 12px 14px; border-radius: 12px;
+background: rgba(255,255,255,0.02);
+border: 1px solid rgba(255,255,255,0.03);
+}
+.oc { width: 3px; height: 32px; border-radius: 2px; flex-shrink: 0; }
+.cg { background: #34d399; }
+.ca { background: #fbbf24; }
+.cr { background: #f87171; }
+.cs { background: #475569; }
+.oi { flex: 1; min-width: 0; }
+.ol { font-size: 13px; font-weight: 700; color: #f0f2f5; line-height: 1.3; letter-spacing: -0.01em; }
+.od { font-size: 11px; color: #555d73; margin-top: 2px; line-height: 1.3; font-weight: 500; }
+.op {
+font-family: ‘JetBrains Mono’, monospace; font-size: 20px; font-weight: 800;
+letter-spacing: -0.04em; text-align: right; flex-shrink: 0; min-width: 64px;
+}
+.pg { color: #34d399; }
+.pa { color: #fbbf24; }
+.pr { color: #f87171; }
+.ps { color: #64748b; }
+
+/* ─── Footer ─── */
+.ft {
+text-align: center; padding: 20px 8px 40px;
+font-size: 11px; color: #555d73; line-height: 1.65;
+}
+.ft strong { color: #8b92a5; font-weight: 600; }
 </style>
 
 </head>
-<body>
+<body style="background-color:#0a0e1a;color:#f0f2f5">
 
 <div class="glow"></div>
-<div class="content">
+<div class="wrap">
 
-<div class="header">
-  <div class="thunder-mark">⚡</div>
+<div class="hdr">
+  <div class="mark">⚡</div>
   <h1>OKC Pick Tracker</h1>
   <p class="sub">Market-implied odds · April 2025 Play-In</p>
 </div>
 
-<div class="toggle">
-  <button class="on" id="t-now" onclick="go('now')">Right Now</button>
-  <button id="t-if" onclick="go('if')">If GSW + ORL Win</button>
+<div class="tog">
+  <button class="on" id="b0" onclick="go('now')">Right Now</button>
+  <button id="b1" onclick="go('if')">If GSW + ORL Win</button>
 </div>
 
-<div class="scenario-badge" id="badge"></div>
-<div class="key-strip" id="keys"></div>
-<div id="cards"></div>
-<div class="footer" id="foot"></div>
+<div class="bdg" id="bdg"></div>
+<div class="ks" id="ks"></div>
+<div id="cds"></div>
+<div class="ft" id="ft"></div>
 
 </div>
 
 <script>
 var D = {
   now: {
-    badge: '<span class="badge-default">Unconditional · All Outcomes</span>',
+    bdg: '<span class="bdg-d">Unconditional · All Outcomes</span>',
     keys: [
-      { val: "68%", lbl: "LAC pick<br>becomes lottery", color: "var(--green)" },
-      { val: "25%", lbl: "PHI pick<br>conveys to OKC", color: "var(--green)" },
-      { val: "4.8%", lbl: "LAC pick<br>lands top 4", color: "var(--amber)" }
+      { v:"68%", l:"LAC PICK<br>BECOMES LOTTERY", c:"#34d399" },
+      { v:"25%", l:"PHI PICK<br>CONVEYS TO OKC", c:"#34d399" },
+      { v:"4.8%", l:"LAC PICK<br>LANDS TOP 4", c:"#fbbf24" }
     ],
-    foot: "Probabilities derived from no-vig play-in lines and Tankathon lottery slots. LAC pick unprotected. PHI pick top-4 protected (2026).",
+    ft: "Derived from no-vig play-in lines & Tankathon lottery slots.<br>LAC pick unprotected. PHI pick top-4 protected (2026).",
     cards: [
-      {
-        team: "Clippers", code: "LAC", dotClass: "dot-lac", slot: "Slot #12",
-        segs: [ {p:4.8,c:"seg-amber"}, {p:63.2,c:"seg-green"}, {p:32.0,c:"seg-slate"} ],
-        rows: [
-          { label:"Lottery → OKC", desc:"Clippers miss playoffs, pick 5–14", pct:"63.2%", oc:"oc-green", pc:"pct-green" },
-          { label:"Playoff Pick", desc:"Clippers make playoffs", pct:"32.0%", oc:"oc-slate", pc:"pct-slate" },
-          { label:"Top 4 Lottery", desc:"1.0% chance at No. 1 overall", pct:"4.8%", oc:"oc-amber", pc:"pct-amber" }
-        ]
-      },
-      {
-        team: "76ers", code: "PHI", dotClass: "dot-phi", slot: "Slot #14",
-        segs: [ {p:25.2,c:"seg-green"}, {p:0.6,c:"seg-red"}, {p:74.2,c:"seg-slate"} ],
-        rows: [
-          { label:"Lottery → OKC", desc:"Philly misses, pick lands 5–14", pct:"25.2%", oc:"oc-green", pc:"pct-green" },
-          { label:"Playoff Pick", desc:"76ers make playoffs", pct:"74.2%", oc:"oc-slate", pc:"pct-slate" },
-          { label:"Philly Keeps", desc:"Misses but jumps to top 4", pct:"0.6%", oc:"oc-red", pc:"pct-red" }
-        ]
-      }
+      { tm:"Clippers", cd:"LAC", dc:"td-l", sl:"Slot #12",
+        sg:[{p:4.8,c:"sa"},{p:63.2,c:"sg"},{p:32,c:"ss"}],
+        rw:[
+          {lb:"Lottery → OKC",ds:"Clippers miss playoffs, pick 5–14",pc:"63.2%",oc:"cg",xc:"pg"},
+          {lb:"Playoff Pick",ds:"Clippers make playoffs",pc:"32.0%",oc:"cs",xc:"ps"},
+          {lb:"Top 4 Lottery",ds:"1.0% chance at No. 1 overall",pc:"4.8%",oc:"ca",xc:"pa"}
+        ]},
+      { tm:"76ers", cd:"PHI", dc:"td-p", sl:"Slot #14",
+        sg:[{p:25.2,c:"sg"},{p:0.6,c:"sr"},{p:74.2,c:"ss"}],
+        rw:[
+          {lb:"Lottery → OKC",ds:"Philly misses, pick lands 5–14",pc:"25.2%",oc:"cg",xc:"pg"},
+          {lb:"Playoff Pick",ds:"76ers make playoffs",pc:"74.2%",oc:"cs",xc:"ps"},
+          {lb:"Philly Keeps",ds:"Misses but jumps to top 4",pc:"0.6%",oc:"cr",xc:"pr"}
+        ]}
     ]
   },
   "if": {
-    badge: '<span class="badge-scenario">Scenario · 18.7% Combo Probability</span>',
+    bdg: '<span class="bdg-s">Scenario · 18.7% Combo Probability</span>',
     keys: [
-      { val: "100%", lbl: "LAC pick<br>becomes lottery", color: "var(--green)" },
-      { val: "52%", lbl: "PHI pick<br>conveys to OKC", color: "var(--green)" },
-      { val: "7.1%", lbl: "LAC pick<br>lands top 4", color: "var(--amber)" }
+      { v:"100%", l:"LAC PICK<br>BECOMES LOTTERY", c:"#34d399" },
+      { v:"52%", l:"PHI PICK<br>CONVEYS TO OKC", c:"#34d399" },
+      { v:"7.1%", l:"LAC PICK<br>LANDS TOP 4", c:"#fbbf24" }
     ],
-    foot: "<strong>Scenario:</strong> Warriors beat Clippers (9v10) and Magic beat 76ers (7v8). Combo: 38.7% × 48.3% = 18.7%. Philly still has one play-in game remaining.",
+    ft: "<strong>Scenario:</strong> Warriors beat Clippers (9v10) + Magic beat 76ers (7v8).<br>Combo: 38.7% × 48.3% = 18.7%. Philly still has one play-in game left.",
     cards: [
-      {
-        team: "Clippers", code: "LAC", dotClass: "dot-lac", slot: "Eliminated",
-        segs: [ {p:7.1,c:"seg-amber"}, {p:92.9,c:"seg-green"} ],
-        rows: [
-          { label:"Lottery → OKC", desc:"Clippers eliminated, pick 5–14", pct:"92.9%", oc:"oc-green", pc:"pct-green" },
-          { label:"Top 4 Lottery", desc:"1.5% chance at No. 1 overall", pct:"7.1%", oc:"oc-amber", pc:"pct-amber" }
-        ]
-      },
-      {
-        team: "76ers", code: "PHI", dotClass: "dot-phi", slot: "Must-Win Game",
-        segs: [ {p:52.2,c:"seg-green"}, {p:1.3,c:"seg-red"}, {p:46.5,c:"seg-slate"} ],
-        rows: [
-          { label:"Lottery → OKC", desc:"Philly loses again, pick lands 5–14", pct:"52.2%", oc:"oc-green", pc:"pct-green" },
-          { label:"Playoff Pick", desc:"Philly wins final play-in", pct:"46.5%", oc:"oc-slate", pc:"pct-slate" },
-          { label:"Philly Keeps", desc:"Misses but jumps to top 4", pct:"1.3%", oc:"oc-red", pc:"pct-red" }
-        ]
-      }
+      { tm:"Clippers", cd:"LAC", dc:"td-l", sl:"Eliminated",
+        sg:[{p:7.1,c:"sa"},{p:92.9,c:"sg"}],
+        rw:[
+          {lb:"Lottery → OKC",ds:"Clippers eliminated, pick 5–14",pc:"92.9%",oc:"cg",xc:"pg"},
+          {lb:"Top 4 Lottery",ds:"1.5% chance at No. 1 overall",pc:"7.1%",oc:"ca",xc:"pa"}
+        ]},
+      { tm:"76ers", cd:"PHI", dc:"td-p", sl:"Must-Win Game",
+        sg:[{p:52.2,c:"sg"},{p:1.3,c:"sr"},{p:46.5,c:"ss"}],
+        rw:[
+          {lb:"Lottery → OKC",ds:"Philly loses again, pick lands 5–14",pc:"52.2%",oc:"cg",xc:"pg"},
+          {lb:"Playoff Pick",ds:"Philly wins final play-in",pc:"46.5%",oc:"cs",xc:"ps"},
+          {lb:"Philly Keeps",ds:"Misses but jumps to top 4",pc:"1.3%",oc:"cr",xc:"pr"}
+        ]}
     ]
   }
 };
@@ -260,38 +266,45 @@ var cur = "now";
 
 function go(k) {
   cur = k;
-  document.getElementById("t-now").className = k === "now" ? "on" : "";
-  document.getElementById("t-if").className = k === "if" ? "on" : "";
+  document.getElementById("b0").className = k==="now"?"on":"";
+  document.getElementById("b1").className = k==="if"?"on":"";
   render();
 }
 
 function render() {
   var d = D[cur];
-  document.getElementById("badge").innerHTML = d.badge;
-  document.getElementById("foot").innerHTML = d.foot;
+  document.getElementById("bdg").innerHTML = d.bdg;
+  document.getElementById("ft").innerHTML = d.ft;
 
-  document.getElementById("keys").innerHTML = d.keys.map(function(k) {
-    return '<div class="key-num"><span class="val" style="color:'+k.color+'">'+k.val+'</span><span class="lbl">'+k.lbl+'</span></div>';
-  }).join("");
+  var kh = "";
+  for (var i=0; i<d.keys.length; i++) {
+    var k = d.keys[i];
+    kh += '<div class="kn"><span class="v" style="color:'+k.c+'">'+k.v+'</span><span class="l">'+k.l+'</span></div>';
+  }
+  document.getElementById("ks").innerHTML = kh;
 
-  document.getElementById("cards").innerHTML = d.cards.map(function(c) {
-    var segsHtml = c.segs.map(function(s) {
-      return '<div class="seg '+s.c+'" data-w="'+s.p+'"></div>';
-    }).join("");
-    var rowsHtml = c.rows.map(function(r) {
-      return '<div class="outcome-row"><div class="outcome-color '+r.oc+'"></div><div class="outcome-info"><div class="outcome-label">'+r.label+'</div><div class="outcome-desc">'+r.desc+'</div></div><div class="outcome-pct '+r.pc+'">'+r.pct+'</div></div>';
-    }).join("");
-    return '<div class="card"><div class="card-top"><div class="card-team"><div class="team-dot '+c.dotClass+'"></div><span>'+c.team+'</span><small>'+c.code+'</small></div><div class="card-slot">'+c.slot+'</div></div><div class="stacked-bar">'+segsHtml+'</div><div class="outcomes">'+rowsHtml+'</div></div>';
-  }).join("");
+  var ch = "";
+  for (var i=0; i<d.cards.length; i++) {
+    var c = d.cards[i];
+    var sh = "";
+    for (var j=0; j<c.sg.length; j++) {
+      sh += '<i class="'+c.sg[j].c+'" data-w="'+c.sg[j].p+'"></i>';
+    }
+    var rh = "";
+    for (var j=0; j<c.rw.length; j++) {
+      var r = c.rw[j];
+      rh += '<div class="or"><div class="oc '+r.oc+'"></div><div class="oi"><div class="ol">'+r.lb+'</div><div class="od">'+r.ds+'</div></div><div class="op '+r.xc+'">'+r.pc+'</div></div>';
+    }
+    ch += '<div class="cd"><div class="ct"><div class="ctm"><div class="td '+c.dc+'"></div><b>'+c.tm+'</b><em>'+c.cd+'</em></div><div class="sl">'+c.sl+'</div></div><div class="sb">'+sh+'</div><div class="os">'+rh+'</div></div>';
+  }
+  document.getElementById("cds").innerHTML = ch;
 
-  requestAnimationFrame(function() {
-    requestAnimationFrame(function() {
-      var segs = document.querySelectorAll(".seg");
-      for (var i = 0; i < segs.length; i++) {
-        segs[i].style.width = segs[i].getAttribute("data-w") + "%";
-      }
-    });
-  });
+  requestAnimationFrame(function(){requestAnimationFrame(function(){
+    var els = document.querySelectorAll(".sb i");
+    for (var i=0; i<els.length; i++) {
+      els[i].style.width = els[i].getAttribute("data-w")+"%";
+    }
+  })});
 }
 
 render();
