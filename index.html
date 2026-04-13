@@ -128,7 +128,9 @@ body{font-family:'Inter',-apple-system,sans-serif;-webkit-font-smoothing:antiali
 .prsp-l{font-size:11px;font-weight:600;color:#8b92a5;margin-bottom:6px}
 .prsp-note{font-size:10px;color:#444b5e;margin-top:8px;font-style:italic}
 .chips{display:flex;flex-wrap:wrap;gap:5px}
-.chip{display:inline-block;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600}
+.chip{display:inline-block;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;text-decoration:none}
+a.chip{cursor:pointer}
+a.chip:active{opacity:.7}
 .chg{background:rgba(52,211,153,.08);color:#34d399;border:1px solid rgba(52,211,153,.15)}
 .cha{background:rgba(251,191,36,.08);color:#fbbf24;border:1px solid rgba(251,191,36,.15)}
 .chs{background:rgba(255,255,255,.03);color:#8b92a5;border:1px solid rgba(255,255,255,.06)}
@@ -212,14 +214,14 @@ var teams = {
     possibleRange: "1\u20134 and 12\u201314",
     prospects: [
       {lbl:"If pick lands 12\u201314 (95.3%)", chips:[
-        {name:"Koa Peat", c:"chg"},
-        {name:"Cameron Carr", c:"chg"},
-        {name:"Nate Ament", c:"chg"}
+        {name:"Koa Peat", c:"chg", url:"https://www.tankathon.com/players/koa-peat"},
+        {name:"Cameron Carr", c:"chg", url:"https://www.tankathon.com/players/cameron-carr"},
+        {name:"Nate Ament", c:"chg", url:"https://www.tankathon.com/players/nate-ament"}
       ]},
       {lbl:"If top-4 jump (4.7%)", chips:[
-        {name:"AJ Dybantsa", c:"cha"},
-        {name:"Darryn Peterson", c:"cha"},
-        {name:"Cameron Boozer", c:"cha"}
+        {name:"AJ Dybantsa", c:"cha", url:"https://www.tankathon.com/players/aj-dybantsa"},
+        {name:"Darryn Peterson", c:"cha", url:"https://www.tankathon.com/players/darryn-peterson"},
+        {name:"Cameron Boozer", c:"cha", url:"https://www.tankathon.com/players/cameron-boozer"}
       ]}
     ]
   },
@@ -233,9 +235,9 @@ var teams = {
     possibleRange: "1\u20134 and 14",
     prospects: [
       {lbl:"If pick conveys at 14 (97.7%)", chips:[
-        {name:"Nate Ament", c:"chg"},
-        {name:"Jayden Quaintance", c:"chg"},
-        {name:"Karim Lopez", c:"chg"}
+        {name:"Nate Ament", c:"chg", url:"https://www.tankathon.com/players/nate-ament"},
+        {name:"Jayden Quaintance", c:"chg", url:"https://www.tankathon.com/players/jayden-quaintance"},
+        {name:"Karim Lopez", c:"chg", url:"https://www.tankathon.com/players/karim-lopez"}
       ]},
       {lbl:"Top 4 \u2192 Philly keeps (2.3%)", chips:[
         {name:"Pick stays in Philly", c:"chs"}
@@ -252,8 +254,8 @@ var teams = {
     possibleRange: "9 (only if slot 5 and four teams jump)",
     prospects: [
       {lbl:"If pick conveys at 9 (0.3%)", chips:[
-        {name:"Brayden Burries", c:"chg"},
-        {name:"Labaron Philon", c:"chg"}
+        {name:"Brayden Burries", c:"chg", url:"https://www.tankathon.com/players/brayden-burries"},
+        {name:"Labaron Philon", c:"chg", url:"https://www.tankathon.com/players/labaron-philon"}
       ]},
       {lbl:"Jazz keep (99.7%)", chips:[
         {name:"Obligation extinguishes", c:"chs"}
@@ -563,7 +565,12 @@ function renderProspects(prospects) {
     var pr = prospects[j];
     h += '<div class="prsp-r"><div class="prsp-l">' + pr.lbl + '</div><div class="chips">';
     for (var m = 0; m < pr.chips.length; m++) {
-      h += '<span class="chip ' + pr.chips[m].c + '">' + pr.chips[m].name + '</span>';
+      var ch = pr.chips[m];
+      if (ch.url) {
+        h += '<a class="chip ' + ch.c + '" href="' + ch.url + '" target="_blank" rel="noopener">' + ch.name + '</a>';
+      } else {
+        h += '<span class="chip ' + ch.c + '">' + ch.name + '</span>';
+      }
     }
     h += '</div></div>';
   }
