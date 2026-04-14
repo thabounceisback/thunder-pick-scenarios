@@ -208,18 +208,18 @@ var teams = {
   LAC: {
     name: "Clippers", code: "LAC", dotClass: "tdl",
     slots: [
-      {n:"1", p:1.0}, {n:"2", p:1.1}, {n:"3", p:1.2}, {n:"4", p:1.4},
+      {n:"1", p:1.5}, {n:"2", p:1.7}, {n:"3", p:1.9}, {n:"4", p:2.0},
       null,
-      {n:"12", p:71.7}, {n:"13", p:17.7}, {n:"14", p:5.9}
+      {n:"12", p:82.9}, {n:"13", p:9.8}
     ],
-    possibleRange: "1\u20134 and 12\u201314",
+    possibleRange: "1\u20134 and 11\u201314",
     prospects: [
-      {lbl:"If pick lands 12\u201314 (95.3%)", chips:[
+      {lbl:"If pick lands 11\u201314 (90%+)", chips:[
+        {name:"Yaxel Lendeborg", c:"chg", url:"https://www.tankathon.com/players/yaxel-lendeborg"},
         {name:"Koa Peat", c:"chg", url:"https://www.tankathon.com/players/koa-peat"},
-        {name:"Cameron Carr", c:"chg", url:"https://www.tankathon.com/players/cameron-carr"},
-        {name:"Nate Ament", c:"chg", url:"https://www.tankathon.com/players/nate-ament"}
+        {name:"Cameron Carr", c:"chg", url:"https://www.tankathon.com/players/cameron-carr"}
       ]},
-      {lbl:"If top-4 jump (4.7%)", chips:[
+      {lbl:"If top-4 jump (7\u20139%)", chips:[
         {name:"AJ Dybantsa", c:"cha", url:"https://www.tankathon.com/players/aj-dybantsa"},
         {name:"Darryn Peterson", c:"cha", url:"https://www.tankathon.com/players/darryn-peterson"},
         {name:"Cameron Boozer", c:"cha", url:"https://www.tankathon.com/players/cameron-boozer"}
@@ -283,30 +283,74 @@ var utaCard = {
 };
 
 var lacElimCard = {
-  team: "LAC", slotLabel: "Eliminated \u00b7 Slot #12",
-  tagline: "Locked in. OKC\u2019s biggest realistic draft asset this year.",
-  segments: [{p:4.7,c:"sa"}, {p:95.3,c:"sg"}],
-  expected: "Guaranteed lottery. Most likely result: <strong>pick 12</strong>.",
+  team: "LAC", slotLabel: "Eliminated \u00b7 Slot #11 or #12",
+  tagline: "Locked in as lottery. Slot depends on whether GSW also gets eliminated downstream.",
+  segments: [{p:7.1,c:"sa"}, {p:92.9,c:"sg"}],
+  expected: "Guaranteed lottery. If other results push LAC to <strong>slot 11</strong>: 9.4% top-4 chance. At <strong>slot 12</strong> (more likely): 7.1% top-4.",
+  slots: [
+    {n:"1", p:1.5}, {n:"2", p:1.7}, {n:"3", p:1.9}, {n:"4", p:2.0},
+    null,
+    {n:"11", p:77.6, note:"if slot 11"},
+    {n:"12", p:82.9, note:"if slot 12"},
+    {n:"13", p:9.8}
+  ],
+  possibleRange: "1\u20134 and 11\u201313",
+  prospects: [
+    {lbl:"If pick lands 11\u201313 (most likely)", chips:[
+      {name:"Yaxel Lendeborg", c:"chg", url:"https://www.tankathon.com/players/yaxel-lendeborg"},
+      {name:"Koa Peat", c:"chg", url:"https://www.tankathon.com/players/koa-peat"},
+      {name:"Cameron Carr", c:"chg", url:"https://www.tankathon.com/players/cameron-carr"}
+    ]},
+    {lbl:"If top-4 jump (7\u20139%)", chips:[
+      {name:"AJ Dybantsa", c:"cha", url:"https://www.tankathon.com/players/aj-dybantsa"},
+      {name:"Darryn Peterson", c:"cha", url:"https://www.tankathon.com/players/darryn-peterson"},
+      {name:"Cameron Boozer", c:"cha", url:"https://www.tankathon.com/players/cameron-boozer"}
+    ]}
+  ],
   outcomes: [
-    {lb:"Conveys to OKC", ds:"Clippers eliminated, pick 12\u201314",
-     pc:95.3, oc:"cg", xc:"pg"},
-    {lb:"Top-4 jump", ds:"Includes 1.0% chance at No.\u00a01",
-     pc:4.7, oc:"ca", xc:"pa"}
+    {lb:"Conveys to OKC", ds:"Clippers eliminated, pick 11\u201313",
+     pc:92.9, oc:"cg", xc:"pg"},
+    {lb:"Top-4 jump", ds:"7\u20139% depending on slot; includes ~1.5% at No.\u00a01",
+     pc:7.1, oc:"ca", xc:"pa"}
   ]
 };
 
 var lacPlayinCard = {
-  team: "LAC", slotLabel: "Final Play-In \u00b7 Slot #12",
-  tagline: "One more game. \u223C50/50 whether this becomes a lottery pick or a late 1st.",
-  segments: [{p:2.2,c:"sa"}, {p:45.3,c:"sg"}, {p:52.5,c:"ss"}],
-  expected: "LAC must win one more game. If they lose: <strong>pick 12</strong> for OKC.",
+  team: "LAC", slotLabel: "Final Play-In \u00b7 Slot #12 or Pick 15",
+  tagline: "One more game. If LAC loses: lottery at slot 12. If LAC wins: playoff pick ~15th.",
+  segments: [{p:3.4,c:"sa"}, {p:44.1,c:"sg"}, {p:52.5,c:"ss"}],
+  expected: "If LAC misses: <strong>slot 12</strong> (7.1% top-4 jump). If LAC makes playoffs: <strong>pick ~15</strong>.",
+  slots: [
+    {n:"1", p:1.5}, {n:"2", p:1.7}, {n:"3", p:1.9}, {n:"4", p:2.0},
+    null,
+    {n:"12", p:82.9}, {n:"13", p:9.8},
+    null,
+    {n:"15", p:0, note:"if playoffs"}
+  ],
+  possibleRange: "1\u20134 and 12\u201313 (lottery) or ~15 (playoffs)",
+  prospects: [
+    {lbl:"If pick lands 12\u201313 (lottery)", chips:[
+      {name:"Koa Peat", c:"chg", url:"https://www.tankathon.com/players/koa-peat"},
+      {name:"Cameron Carr", c:"chg", url:"https://www.tankathon.com/players/cameron-carr"},
+      {name:"Nate Ament", c:"chg", url:"https://www.tankathon.com/players/nate-ament"}
+    ]},
+    {lbl:"If LAC makes playoffs (~15th)", chips:[
+      {name:"Braylon Mullins", c:"chs", url:"https://www.tankathon.com/players/braylon-mullins"},
+      {name:"Thomas Haugh", c:"chs", url:"https://www.tankathon.com/players/thomas-haugh"}
+    ]},
+    {lbl:"If top-4 jump (7.1%)", chips:[
+      {name:"AJ Dybantsa", c:"cha", url:"https://www.tankathon.com/players/aj-dybantsa"},
+      {name:"Darryn Peterson", c:"cha", url:"https://www.tankathon.com/players/darryn-peterson"},
+      {name:"Cameron Boozer", c:"cha", url:"https://www.tankathon.com/players/cameron-boozer"}
+    ]}
+  ],
   outcomes: [
-    {lb:"Conveys to OKC", ds:"Clippers lose final play-in, pick 12\u201314",
-     pc:45.3, oc:"cg", xc:"pg"},
-    {lb:"Does not convey", ds:"Clippers win final play-in \u2192 playoff pick (~15\u201320)",
+    {lb:"Lottery \u2192 OKC", ds:"Clippers lose final play-in, pick 12\u201313",
+     pc:44.1, oc:"cg", xc:"pg"},
+    {lb:"Playoffs \u2192 OKC", ds:"Clippers make 8 seed, pick ~15th overall",
      pc:52.5, oc:"csl", xc:"ps"},
-    {lb:"Top-4 jump", ds:"Misses + lottery jump",
-     pc:2.2, oc:"ca", xc:"pa"}
+    {lb:"Top-4 jump", ds:"Misses + lottery jump (7.1% conditional)",
+     pc:3.4, oc:"ca", xc:"pa"}
   ]
 };
 
@@ -349,19 +393,19 @@ var scenarios = {
       "<div class='dim'>Two live lottery assets is the Thunder\u2019s dream board.</div>",
     rooting: [
       {icon:"\u2705", game:"Warriors beat Clippers", best:"Done",
-       why:"LAC eliminated \u2014 locked into lottery at slot #12"},
+       why:"LAC eliminated \u2014 locked into lottery at slot #11 or #12"},
       {icon:"🏀", game:"76ers vs TBD (final play-in)", best:"Opponent",
        why:"One more Philly loss \u2192 pick conveys as lottery"}
     ],
     keys: [
       {v:100, label:"LAC PICK<br>BECOMES LOTTERY", c:"#34d399"},
       {v:52,  label:"PHI PICK<br>LOTTERY TO OKC",  c:"#34d399"},
-      {v:4.7, label:"LAC PICK<br>LANDS TOP 4",     c:"#fbbf24"}
+      {v:7.1, label:"LAC PICK<br>LANDS TOP 4",     c:"#fbbf24"}
     ],
     bwl: {
       likely: "OKC locks in LAC lottery asset; PHI is a coin flip",
       best:   "All three picks convey \u2014 LAC, PHI, and Jazz",
-      chaos:  "LAC top-4 jump (4.7%) or Jazz fall to 9 (0.3%)",
+      chaos:  "LAC top-4 jump (720139%) or Jazz fall to 9 (0.3%)",
       worst:  "Philly wins final play-in \u2014 OKC gets LAC lottery + PHI ~15\u201320"
     },
     cards: [lacElimCard, phiPlayinCard, utaCard]
@@ -375,18 +419,18 @@ var scenarios = {
       "<div class='dim'>One lottery pick locked in. Solid floor.</div>",
     rooting: [
       {icon:"\u2705", game:"Warriors beat Clippers", best:"Done",
-       why:"LAC eliminated \u2014 locked into lottery at slot #12"},
+       why:"LAC eliminated \u2014 locked into lottery at slot #11 or #12"},
       {icon:"\u274C", game:"76ers beat Magic", best:"\u2014",
        why:"PHI to playoffs \u2014 pick conveys as ~15\u201320"}
     ],
     keys: [
       {v:100, label:"LAC PICK<br>BECOMES LOTTERY", c:"#34d399"},
       {v:0,   label:"PHI PICK<br>LOTTERY TO OKC",  c:"#555d73"},
-      {v:4.7, label:"LAC PICK<br>LANDS TOP 4",     c:"#fbbf24"}
+      {v:7.1, label:"LAC PICK<br>LANDS TOP 4",     c:"#fbbf24"}
     ],
     bwl: {
-      likely: "OKC gets LAC lottery pick (12\u201314) + PHI playoff pick (~15\u201320)",
-      best:   "LAC jumps to top 4 (4.7%)",
+      likely: "OKC gets LAC lottery pick (11\u201313) + PHI playoff pick (~15\u201320)",
+      best:   "LAC jumps to top 4 (720139%)",
       chaos:  "Jazz falls to 9 (0.3%) \u2014 surprise third asset",
       worst:  "This IS the floor \u2014 two picks locked in, both mid-to-late 1st"
     },
@@ -411,12 +455,12 @@ var scenarios = {
     keys: [
       {v:47.5, label:"LAC PICK<br>BECOMES LOTTERY", c:"#34d399"},
       {v:52,   label:"PHI PICK<br>LOTTERY TO OKC",  c:"#34d399"},
-      {v:2.2,  label:"LAC PICK<br>LANDS TOP 4",     c:"#fbbf24"}
+      {v:3.4,  label:"LAC PICK<br>LANDS TOP 4",     c:"#fbbf24"}
     ],
     bwl: {
       likely: "Both in must-win games \u2014 OKC could land 0, 1, or 2 lottery picks",
       best:   "Both miss \u2192 two lottery assets + Jazz somehow conveys",
-      chaos:  "LAC top-4 jump if they miss (2.2%)",
+      chaos:  "LAC top-4 jump if they miss (3.4%)",
       worst:  "Both win final play-ins \u2014 OKC gets two playoff picks (~15\u201320)"
     },
     cards: [lacPlayinCard, phiPlayinCard, utaCard]
@@ -439,12 +483,12 @@ var scenarios = {
     keys: [
       {v:47.5, label:"LAC PICK<br>BECOMES LOTTERY", c:"#34d399"},
       {v:0,    label:"PHI PICK<br>LOTTERY TO OKC",  c:"#555d73"},
-      {v:2.2,  label:"LAC PICK<br>LANDS TOP 4",     c:"#fbbf24"}
+      {v:3.4,  label:"LAC PICK<br>LANDS TOP 4",     c:"#fbbf24"}
     ],
     bwl: {
       likely: "OKC gets PHI playoff pick (~15\u201320); LAC is a coin flip in final play-in",
       best:   "LAC misses playoffs \u2192 lottery pick for OKC",
-      chaos:  "LAC top-4 jump if they miss (2.2%)",
+      chaos:  "LAC top-4 jump if they miss (3.4%)",
       worst:  "LAC makes playoffs too \u2014 OKC gets two playoff picks (~15\u201320)"
     },
     cards: [lacPlayinCard, phiPlayoffsCard, utaCard]
@@ -584,6 +628,9 @@ var cardCounter = 0;
 function renderCard(card) {
   var t = teams[card.team];
   var cid = "c" + (cardCounter++);
+  var slots = card.slots || t.slots;
+  var range = card.possibleRange || t.possibleRange;
+  var prosp = card.prospects || t.prospects;
   var h = '<div class="cd">';
   h += '<div class="ct"><div class="ctm"><div class="tdot ' + t.dotClass + '"></div>' +
        '<b>' + t.name + '</b><em>' + t.code + '</em></div>' +
@@ -604,10 +651,10 @@ function renderCard(card) {
   }
   h += '</div><div class="exp">' + card.expected + '</div>';
   h += '<div class="sls"><div class="sls-t">Pick distribution (if lottery)</div>' +
-       '<div class="sls-note">Only picks ' + t.possibleRange + ' are possible</div>' +
-       renderSlotChart(t.slots, cid) + '</div>';
+       '<div class="sls-note">Only picks ' + range + ' are possible</div>' +
+       renderSlotChart(slots, cid) + '</div>';
   h += '<div class="prsp"><div class="prsp-t">Names often mocked in this range</div>' +
-       renderProspects(t.prospects) + '</div>';
+       renderProspects(prosp) + '</div>';
   return h + '</div>';
 }
 
